@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start": "node -r newrelic -r ts-node/register/transpile-only -r tsconfig-paths/register server/dist/src/index.js",
+    "start": "node server/dist/src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "transpile": "tsc",
-    "clean": "rimraf dist",
+    "clean": "rimraf server/dist",
     "build": "yarn clean && yarn transpile",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
