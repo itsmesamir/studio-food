@@ -1,17 +1,17 @@
-import knex, { Knex } from "knex";
-import camelCase from "camelize";
-import toSnakeCase from "to-snake-case";
+import knex, { Knex } from 'knex';
+import camelCase from 'camelize';
+import toSnakeCase from 'to-snake-case';
 
-import { baseKnexConfig } from "knexFile";
+import { baseKnexConfig } from 'knexFile';
 
-import { Any } from "./types/common";
+import { Any } from './types/common';
 
 const knexConfig: Knex.Config = {
   ...baseKnexConfig,
   connection: {
     ...baseKnexConfig.connection,
     typeCast: (field: Any, next: Any) => {
-      if (field.type == "DATE") {
+      if (field.type == 'DATE') {
         return field.string();
       }
 
@@ -19,13 +19,13 @@ const knexConfig: Knex.Config = {
     },
   },
   wrapIdentifier: (value: string, origImpl: (value: string) => string) => {
-    if (value === "*") {
+    if (value === '*') {
       return origImpl(value);
     }
 
     return origImpl(toSnakeCase(value));
   },
-  postProcessResponse: (result) => {
+  postProcessResponse: result => {
     return camelCase(result);
   },
 };

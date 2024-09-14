@@ -16,6 +16,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   const user: User | undefined = await db<User>("users")
     .where({ email })
     .first();
+
   if (!user || !bcrypt.compareSync(password, user.password)) {
     res.status(400).json({ message: "Invalid credentials" });
     return;

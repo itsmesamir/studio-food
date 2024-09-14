@@ -1,20 +1,20 @@
-import { config as dotEnvConfig } from "dotenv";
+import { config as dotEnvConfig } from 'dotenv';
 
-const pathToEnv = __dirname + "/../.env";
+const pathToEnv = __dirname + '/../.env';
 
 dotEnvConfig({ path: pathToEnv });
 
 const config = {
   NODE_ENV: process.env.NODE_ENV,
   app: {
-    name: process.env.APP_NAME || "auth-server",
-    version: process.env.APP_VERSION || "1.1.0",
+    name: process.env.APP_NAME || 'auth-server',
+    version: process.env.APP_VERSION || '1.1.0',
     port: process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000,
-    baseURL: process.env.APP_BASE_URL || "/api",
+    baseURL: process.env.APP_BASE_URL || '/api',
   },
   sentry: {
-    dsn: "",
-    environment: "",
+    dsn: '',
+    environment: '',
   },
   database: {
     client: process.env.DB_CLIENT,
@@ -23,27 +23,27 @@ const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    charset: "utf8",
-    timezone: "UTC",
+    charset: 'utf8',
+    timezone: 'UTC',
   },
   jwt: {
-    secret: process.env.JWT_SECRET || "secret",
+    secret: process.env.JWT_SECRET || 'secret',
     signOptions: {
-      algorithm: "HS256",
-      expiresIn: process.env.JWT_EXPIRESIN || "50m",
+      algorithm: 'HS256',
+      expiresIn: process.env.JWT_EXPIRESIN || '50m',
     },
     refreshTokenSignOptions: {
-      expiresIn: process.env.JWT_REFRESH_EXPIRESIN || "7d",
-      algorithm: "HS256",
+      expiresIn: process.env.JWT_REFRESH_EXPIRESIN || '7d',
+      algorithm: 'HS256',
     },
   },
   cookie: {
     options: {
       domain: process.env.COOKIE_DOMAIN,
-      path: "/",
+      path: '/',
       httpOnly: false,
       secure: true,
-      sameSite: "none",
+      sameSite: 'none',
       expires: new Date(Date.now() + parseInt(process.env.COOKIE_DURATION)),
     },
   },

@@ -5,6 +5,16 @@ exports.seed = function (knex: Knex) {
     .then(function () {
       return knex("users").insert([
         {
+          id: 400,
+          name: "Admin Sir",
+          email: "admin@gmail.com",
+          password:
+            "d8ec9b20f8519604e1b6d4bdfcd43db2730a9408c6ae2cd6f8cef70f1b10250a",
+          designation: "Writer",
+          department: "Script",
+          role: "user",
+        },
+        {
           id: 1,
           name: "Khagendra Lamichhane",
           designation: "Writer",
