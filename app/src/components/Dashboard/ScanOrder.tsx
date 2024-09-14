@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { QrReader } from "react-qr-reader";
+import {
+  FaCamera,
+  FaRegTimesCircle,
+  FaCheckCircle,
+  FaRedoAlt,
+} from "react-icons/fa";
 import "../../../src/scanOrder.css";
 
 interface UserDetails {
@@ -18,19 +24,18 @@ const ScanOrder = () => {
   const [isMealTypeAutoSet, setIsMealTypeAutoSet] = useState(false);
 
   useEffect(() => {
-    // Determine meal type based on the current time
     const currentHour = new Date().getHours();
     if (currentHour >= 6 && currentHour < 10) {
-      setMealType("Breakfast");
+      setMealType("breakfast");
     } else if (currentHour >= 10 && currentHour < 15) {
-      setMealType("Lunch");
+      setMealType("lunch");
     } else if (currentHour >= 15 && currentHour < 22) {
-      setMealType("Dinner");
+      setMealType("dinner");
     } else {
-      setMealType("Midnight Snack");
+      setMealType("midnightSnack");
     }
     setIsMealTypeAutoSet(true);
-  }, []);
+  }, [mealType]);
 
   const fetchUserDetails = async (scannedInfo: any) => {
     try {
@@ -72,6 +77,12 @@ const ScanOrder = () => {
     }
   };
 
+  const handleCancelOrder = () => {
+    if (window.confirm("Are you sure you want to cancel this order?")) {
+      resetForm();
+    }
+  };
+
   const resetForm = () => {
     setScannedData(null);
     setUserDetails(null);
@@ -81,64 +92,102 @@ const ScanOrder = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Scan and Place Food Order
+    <div className="container mx-auto p-6 bg-gray-100 rounded-lg shadow-lg tablet-max:w-1/2 tablet-max:mx-auto">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
+        Scan and Place Order
       </h1>
 
-      <div className="scanner-container mb-4">
+      <div className="scanner-container mb-6 flex flex-col items-center">
         {!isScanning && (
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg mb-6 w-60 hover:bg-blue-700 transition-all ease-in-out flex items-center justify-center"
             onClick={() => setIsScanning(true)}
           >
+            <div className="mr-2">
+              <FaCamera />
+            </div>
             Start Scanning
           </button>
         )}
 
         {isScanning && (
-          <QrReader
-            onResult={(result: any, error) => {
-              if (result?.text) {
-                setScannedData(result.text);
-                fetchUserDetails(result.text);
-                setIsScanning(false);
-              }
-              if (error) {
-                console.error("QR scan error:", error);
-              }
-            }}
-            constraints={{ facingMode: "environment" }}
-          />
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90">
+            <QrReader
+              onResult={(result: any, error) => {
+                if (result?.text) {
+                  const scanBox = document.querySelector(".scan-box");
+                  const scanBoxRect = scanBox?.getBoundingClientRect();
+                  const qrReaderRect = document
+                    .querySelector(".qr-reader")
+                    ?.getBoundingClientRect();
+
+                  if (
+                    scanBoxRect &&
+                    qrReaderRect &&
+                    scanBoxRect.left >= qrReaderRect.left &&
+                    scanBoxRect.right <= qrReaderRect.right &&
+                    scanBoxRect.top >= qrReaderRect.top &&
+                    scanBoxRect.bottom <= qrReaderRect.bottom
+                  ) {
+                    setScannedData(result.text);
+                    fetchUserDetails(result.text);
+                    setIsScanning(false);
+                  }
+                }
+                if (error) {
+                  console.error("QR scan error:", error);
+                }
+              }}
+              constraints={{ facingMode: "environment" }}
+              className="absolute inset-0 w-full h-full qr-reader"
+            />
+
+            <div className="relative w-72 h-72 border-4 border-red-500 rounded-lg flex items-center justify-center scan-box">
+              <div className="absolute w-full h-1 bg-red-500 animate-scan-line"></div>
+            </div>
+
+            <button
+              className="absolute top-4 right-4 bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all ease-in-out z-50 flex items-center"
+              onClick={() => setIsScanning(false)}
+            >
+              <FaRegTimesCircle />
+              Cancel Scan
+            </button>
+          </div>
         )}
 
         {scannedData && (
-          <p className="text-green-600">Scanned successfully! {scannedData}</p>
+          <p className="text-green-600 text-lg mt-4 font-bold">
+            Scanned successfully! {scannedData}
+          </p>
         )}
       </div>
 
       {userDetails && (
-        <div className="form-container bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <h2 className="text-xl mb-4">User Details</h2>
-          <p>
-            <strong>Id:</strong> {userDetails.id}
-          </p>
-          <p>
-            <strong>Name:</strong> {userDetails.name}
-          </p>
-          <p>
-            <strong>Department:</strong> {userDetails.department}
-          </p>
-          <p>
-            <strong>Designation:</strong> {userDetails.designation}
-          </p>
-
-          <div className="meal-type mt-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+        <div className="form-container bg-white shadow-lg rounded-lg p-6 mb-6">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+            User Details
+          </h2>
+          <div className="grid grid-cols-2 gap-4 text-gray-700 font-bold">
+            <p>
+              <strong>Id:</strong> {userDetails.id}
+            </p>
+            <p>
+              <strong>Name:</strong> {userDetails.name}
+            </p>
+            <p>
+              <strong>Department:</strong> {userDetails.department}
+            </p>
+            <p>
+              <strong>Designation:</strong> {userDetails.designation}
+            </p>
+          </div>
+          <div className="meal-type mt-6">
+            <label className="block text-gray-700 text-m font-extrabold mb-2">
               Meal Type:
             </label>
             <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="block bg-gray-100 border border-gray-300 text-gray-700 py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-60 font-bold"
               value={mealType}
               onChange={(e) => setMealType(e.target.value)}
             >
@@ -148,29 +197,61 @@ const ScanOrder = () => {
               <option value="midnightSnack">Midnight Snack</option>
             </select>
           </div>
-
-          <button
-            className="bg-green-500 text-white px-4 py-2 rounded mt-4"
-            onClick={handleOrderSubmit}
-          >
-            Place Order
-          </button>
+          <div className="time mt-6">
+            <label className="block text-gray-700 text-m font-extrabold mb-2">
+              Time:
+            </label>
+            <p className="text-gray-700 text-lg font-bold">
+              {new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </p>
+          </div>
+          <div className="flex mt-6 gap-5 justify-end">
+            <button
+              className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-all ease-in-out flex items-center"
+              onClick={handleCancelOrder}
+            >
+              <div className="mr-2">
+                <FaRegTimesCircle />
+              </div>
+              Cancel
+            </button>
+            <button
+              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all ease-in-out flex items-center"
+              onClick={handleOrderSubmit}
+            >
+              <div className="mr-2">
+                <FaCheckCircle />
+              </div>
+              Place Order
+            </button>
+          </div>
         </div>
       )}
 
       {scannedData && !userDetails && (
-        <p className="text-red-500">No valid user data found in the scan.</p>
+        <p className="text-red-500 font-semibold text-lg mt-4">
+          No valid user data found in the scan.
+        </p>
       )}
 
-      <button
-        className="bg-gray-500 text-white px-4 py-2 rounded mt-4"
-        onClick={() => {
-          resetForm();
-          setIsScanning(true);
-        }}
-      >
-        Scan Again
-      </button>
+      <div className="flex justify-center mt-6">
+        <button
+          className="bg-gray-700 text-white px-6 py-3 rounded-lg w-60 hover:bg-gray-800 transition-all ease-in-out flex items-center"
+          onClick={() => {
+            resetForm();
+            setIsScanning(true);
+          }}
+        >
+          <div className="mr-2">
+            <FaRedoAlt />
+          </div>
+          Scan Again
+        </button>
+      </div>
     </div>
   );
 };
