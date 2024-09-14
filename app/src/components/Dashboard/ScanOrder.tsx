@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { QrReader } from "react-qr-reader";
 import "../../../src/scanOrder.css";
+import { getMealType } from "utils/order";
+import { MealType } from "enums/order";
+import MealSelector from "./MealSelector";
 
 interface UserDetails {
   id: string;
@@ -13,24 +16,19 @@ interface UserDetails {
 const ScanOrder = () => {
   const [scannedData, setScannedData] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
-  const [mealType, setMealType] = useState("");
   const [isScanning, setIsScanning] = useState(false);
-  const [isMealTypeAutoSet, setIsMealTypeAutoSet] = useState(false);
 
-  useEffect(() => {
-    // Determine meal type based on the current time
-    const currentHour = new Date().getHours();
-    if (currentHour >= 6 && currentHour < 10) {
-      setMealType("Breakfast");
-    } else if (currentHour >= 10 && currentHour < 15) {
-      setMealType("Lunch");
-    } else if (currentHour >= 15 && currentHour < 22) {
-      setMealType("Dinner");
-    } else {
-      setMealType("Midnight Snack");
-    }
-    setIsMealTypeAutoSet(true);
-  }, []);
+  const mealOptions = Object.values(MealType);
+
+  const [selectedMealType, setSelectedMealType] = useState<MealType>(() => {
+    return getMealType(new Date().getHours());
+  });
+
+  const handleMealTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedMealType(event.target.value as MealType);
+  };
 
   const fetchUserDetails = async (scannedInfo: any) => {
     try {
@@ -59,7 +57,7 @@ const ScanOrder = () => {
         "http://localhost:5555/api/orders",
         {
           userId: userDetails.id,
-          mealType,
+          mealType: selectedMealType,
         },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -75,9 +73,8 @@ const ScanOrder = () => {
   const resetForm = () => {
     setScannedData(null);
     setUserDetails(null);
-    setMealType("");
+    setSelectedMealType(getMealType(new Date().getHours()));
     setIsScanning(false);
-    setIsMealTypeAutoSet(false);
   };
 
   return (
@@ -132,22 +129,15 @@ const ScanOrder = () => {
           <p>
             <strong>Designation:</strong> {userDetails.designation}
           </p>
+          <p>
+            <strong>MealType:</strong> {selectedMealType}
+          </p>
 
-          <div className="meal-type mt-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Meal Type:
-            </label>
-            <select
-              className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              value={mealType}
-              onChange={(e) => setMealType(e.target.value)}
-            >
-              <option value="breakfast">Breakfast</option>
-              <option value="lunch">Lunch</option>
-              <option value="dinner">Dinner</option>
-              <option value="midnightSnack">Midnight Snack</option>
-            </select>
-          </div>
+          <MealSelector
+            selectedMeal={selectedMealType}
+            onMealChange={handleMealTypeChange}
+            mealOptions={mealOptions}
+          />
 
           <button
             className="bg-green-500 text-white px-4 py-2 rounded mt-4"
