@@ -1,10 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import useUserStore from "stores/useUserStore";
 
 const Navbar = () => {
+  const { data: currentUser, logout } = useUserStore();
+
+  const isAdmin = true;
+
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+    logout();
+    navigate("/login");
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -14,18 +26,35 @@ const Navbar = () => {
           Food Order App
         </Link>
         <div>
-          <Link to="/scan" className="text-white mx-4">
-            Scan Order
-          </Link>
-          <Link to="/admin" className="text-white mx-4">
-            Admin
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600"
-          >
-            Logout
-          </button>
+          {currentUser && (
+            <Link to="/scan" className="text-white mx-4">
+              Scan Order
+            </Link>
+          )}
+
+          {currentUser && isAdmin && (
+            <Link to="/admin" className="text-white mx-4">
+              Admin
+            </Link>
+          )}
+
+          {currentUser && (
+            <button
+              onClick={handleLogout}
+              className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600"
+            >
+              Logout
+            </button>
+          )}
+
+          {!currentUser && (
+            <button
+              onClick={handleLogin}
+              className="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-600"
+            >
+              Login
+            </button>
+          )}
         </div>
       </div>
     </nav>

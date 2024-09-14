@@ -33,6 +33,12 @@ export const getOrders = (params: any) => api.get("/orders", { params });
 // User API
 export const getUserById = (id: string) => api.get(`/users/${id}`);
 
+export const getCurrentUser = async () => {
+  const response = await api.get(`/users/current`);
+
+  return response.data;
+};
+
 // Exporting API functions
 export default {
   login,
