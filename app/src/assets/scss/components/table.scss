@@ -1,0 +1,23 @@
+table {
+  tr {
+    .menu-container {
+      .menu-button-icon {
+        visibility: hidden;
+      }
+    }
+
+    .menu-container--active {
+      .menu-button-icon {
+        visibility: visible;
+      }
+    }
+
+    &:hover {
+      .menu-container {
+        .menu-button-icon {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
