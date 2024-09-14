@@ -14,7 +14,7 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
   const authHeader = req.headers['authorization'];
   const accessToken = authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1];
 
-  if (!accessToken) {
+  if (!accessToken || accessToken !== 'undefined') {
     addToStore({ currentUser: null });
 
     next();

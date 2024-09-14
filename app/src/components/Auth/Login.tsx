@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 import useUserStore from "../../stores/useUserStore";
 import { login } from "services/api";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { updateUser, removeUser } = useUserStore();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,14 +17,12 @@ const Login: React.FC = () => {
       const { data } = await login(email, password);
 
       // Save the token to localStorage (if needed)
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("accessToken", data.tokens.accessToken);
 
       // Update user state in zustand
-      updateUser({
-        token: data.token,
-        role: data.role,
-        email: data.email,
-      });
+      updateUser({ ...data.user });
+
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
     }

@@ -14,12 +14,7 @@ import AuthRoute from "components/Auth/AuthRoute";
 const App = () => {
   const { loading, fetchUser } = useUserStore();
 
-  const [token, setToken] = React.useState<string | null>(
-    localStorage.getItem("token")
-  );
-  const [role, setRole] = React.useState<string | null>(
-    localStorage.getItem("role")
-  );
+
 
   useEffect(() => {
     fetchUser();
