@@ -1,0 +1,1 @@
+export const MINIMUM_DEBOUNCE_SEARCH_LENGTH = 3;

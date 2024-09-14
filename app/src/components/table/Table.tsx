@@ -10,7 +10,7 @@ import {
   InitialTableState,
   getExpandedRowModel,
 } from "@tanstack/react-table";
-// import { useHistory } from "react-router-dom";
+// import { useNavigate  } from "react-router-dom";
 import { FaChevronUp } from "react-icons/fa";
 
 import Empty from "components/empty";
@@ -123,7 +123,7 @@ function Table<T>(props: MyTableProps<T>) {
     pagination,
   } = props;
 
-  // const history = useHistory();
+  // const history = useNavigate ();
 
   const sortable = sorting && !loading;
   const isTableEmpty = !data?.length;
