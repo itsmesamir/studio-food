@@ -21,13 +21,13 @@ const ScanOrder = () => {
     // Determine meal type based on the current time
     const currentHour = new Date().getHours();
     if (currentHour >= 6 && currentHour < 10) {
-      setMealType("breakfast");
+      setMealType("Breakfast");
     } else if (currentHour >= 10 && currentHour < 15) {
-      setMealType("lunch");
+      setMealType("Lunch");
     } else if (currentHour >= 15 && currentHour < 22) {
-      setMealType("dinner");
+      setMealType("Dinner");
     } else {
-      setMealType("midnightSnack");
+      setMealType("Midnight Snack");
     }
     setIsMealTypeAutoSet(true);
   }, []);
@@ -50,7 +50,10 @@ const ScanOrder = () => {
   };
 
   const handleOrderSubmit = async () => {
-    if (!userDetails) return;
+    if (!userDetails) {
+      return;
+    }
+
     try {
       await axios.post(
         "http://localhost:5555/api/orders",

@@ -6,6 +6,12 @@ exports.up = function (knex: Knex) {
     table.string("name").notNullable();
     table.string("designation").notNullable();
     table.string("department").notNullable();
+
+    table.string("email").unique().nullable(); // Email for login, only for authorized users
+    table.string("password").nullable();
+    table.boolean("is_login_enabled").defaultTo(false); // Indicates if the user can log in
+    table.enu("role", ["user", "staff", "admin", "manager"]).defaultTo("user");
+
     table
       .specificType("created_by", "bigint(19)")
       .unsigned()
