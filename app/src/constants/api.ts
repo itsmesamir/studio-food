@@ -9,7 +9,7 @@ const api = {
   logout: `/users/logout`,
   designations: "/designations",
   roles: "/roles",
-  users: "/users",
+  users: "/orders",
   userRoles: "users/:id/roles",
   countries: "/countries",
   leaveTypes: "/leave-types",
