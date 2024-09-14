@@ -22,7 +22,7 @@ export const baseKnexConfig = {
 const knexConfig: Knex.Config = {
   ...baseKnexConfig,
   migrations: {
-    tableName: 'migrations_auth',
+    tableName: 'migrations_studio_food',
     directory: 'database/migrations',
     stub: 'stub/migration.stub',
   },
