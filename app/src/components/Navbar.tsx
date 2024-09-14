@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.jpg";
 
 import useUserStore from "stores/useUserStore";
 
@@ -23,7 +24,7 @@ const Navbar = () => {
     <nav className="bg-blue-500 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-white text-lg font-bold">
-          Food Order App
+          <img src={logo} alt="logod" className="w-[80px] h-[80px]" />
         </Link>
         <div>
           {currentUser && (

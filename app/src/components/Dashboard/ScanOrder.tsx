@@ -147,10 +147,12 @@ const ScanOrder = () => {
             </div>
 
             <button
-              className="absolute top-4 right-4 bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all ease-in-out z-50 flex items-center"
+              className="absolute top-4 right-4 bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all ease-in-out z-50 flex items-center"
               onClick={() => setIsScanning(false)}
             >
-              <FaRegTimesCircle />
+              <div className="mr-2">
+                <FaRegTimesCircle />
+              </div>
               Cancel Scan
             </button>
           </div>
@@ -240,7 +242,7 @@ const ScanOrder = () => {
 
       <div className="flex justify-center mt-6">
         <button
-          className="bg-gray-700 text-white px-6 py-3 rounded-lg w-60 hover:bg-gray-800 transition-all ease-in-out flex items-center"
+          className="bg-gray-700 text-white px-6 py-3 rounded-lg w-60 hover:bg-gray-800 transition-all ease-in-out flex items-center justify-center"
           onClick={() => {
             resetForm();
             setIsScanning(true);
