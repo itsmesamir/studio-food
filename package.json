@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start": "NODE_ENV=production node server/dist/src/index.js",
+    "start": "cd server && yarn run start",
     "dev": "cross-env NODE_ENV=development nodemon",
     "transpile": "tsc",
     "clean": "rimraf server/dist",
@@ -80,19 +80,5 @@
     "to-snake-case": "^1.0.0",
     "ts-jest": "^29.1.2",
     "winston": "^3.11.0"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/test/setup.ts"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ]
   }
 }

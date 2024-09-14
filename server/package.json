@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start": "node -r newrelic -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/index.js",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "transpile": "tsc",
     "clean": "rimraf dist",
