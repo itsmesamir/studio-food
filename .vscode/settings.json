@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": ["source.fixAll.eslint"],
+  "eslint.workingDirectories": ["server", "app", "infra"],
+  "files.eol": "\n"
+}
