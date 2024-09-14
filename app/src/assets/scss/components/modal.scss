@@ -1,0 +1,31 @@
+.modal {
+  background-color: white;
+  border: 0;
+  left: 50%;
+  outline: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  max-height: 80vh;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.search-modal {
+  position: absolute;
+  top: 10px;
+  left: 100px;
+  right: 100px;
+  background-color: white;
+  box-shadow: 0px 2px 4px rgba(179, 179, 179, 0.25);
+  border-radius: 8px;
+}

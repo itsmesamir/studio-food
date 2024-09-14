@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./components/Auth/Login";
 import ScanOrder from "./components/Dashboard/ScanOrder";
-import AdminTable from "./components/AdminTable";
+import AdminTable from "./components/admin/AdminTable";
 import PrivateRoute from "./components/PrivateRoute";
 import Error from "./components/Error";
 

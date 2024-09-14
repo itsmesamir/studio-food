@@ -1,0 +1,11 @@
+.overlay {
+  @apply fixed inset-0 duration-500 ease-in z-50;
+
+  .overlay-content {
+    @apply fixed w-[640px] right-0 h-full bg-white flex flex-col shadow-sm border-none outline-none duration-300 animate-overlay;
+  }
+
+  .overlay-content--close {
+    right: -640px;
+  }
+}

@@ -26,7 +26,7 @@ api.interceptors.request.use(
 
 // Auth API
 export const login = (email: string, password: string) =>
-  api.post("/auth/login", { email, password });
+  api.post("/users/signin", { email, password });
 
 // Order API
 export const getOrders = (params: any) => api.get("/orders", { params });

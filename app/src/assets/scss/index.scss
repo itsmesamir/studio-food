@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.center {
+  @apply flex items-center justify-center;
+}
+
+.tippy-popper,
+.tippy-tooltip {
+  padding: 0px !important;
+
+  .action-dialog {
+    color: #808080;
+    background-color: white;
+  }
+}
+
+.tippy-popper {
+  max-width: 500px !important;
+}
+
+.btn {
+  @apply relative inline-flex h-9 items-center whitespace-nowrap rounded-sm border-none bg-transparent px-2 py-2 text-center text-sm font-semibold leading-none text-black;
+}
+
+.btn--red {
+  @apply bg-primary-600 text-white;
+}
+
+@import 'components/index';

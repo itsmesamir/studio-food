@@ -5,8 +5,6 @@ import BaseModel from '@/models/baseModel';
 import { User, UserBody, UserFilters } from '@/types/user';
 import { Any } from '@/types/common';
 
-import db from '@/db';
-
 class UserModel extends BaseModel {
   static table = 'users';
 
@@ -29,35 +27,7 @@ class UserModel extends BaseModel {
    * @returns
    */
   static baseQuery(trx?: Knex.Transaction) {
-    const rolesQuery = this.queryBuilder(trx)
-      .from('user_roles as ur')
-      .leftJoin('roles as r', 'ur.role_id', 'r.id')
-      .select(
-        'ur.user_id',
-        db.raw("JSON_ARRAYAGG(JSON_OBJECT('id', r.id, 'name', r.name)) as roles")
-      )
-      .groupBy('ur.user_id');
-
-    const query = this.queryBuilder(trx)
-      .select(
-        'u.id as id',
-        'u.name as name',
-        'u.email as email',
-        'c.name as country',
-        'u.department as department',
-        'u.phone as phone',
-        'u.designation_id as designationId',
-        'd.id as designation_id',
-        'd.name as designation_name',
-        'roles.roles as roles',
-        'm.id as manager_id',
-        'm.name as manager_name'
-      )
-      .from('users as u')
-      .leftJoin(rolesQuery.as('roles'), 'u.id', 'roles.user_id')
-      .leftJoin('designations as d', 'u.designation_id', 'd.id')
-      .leftJoin('countries as c', 'u.country_id', 'c.id')
-      .leftJoin('users as m', 'u.manager_id', 'm.id');
+    const query = this.queryBuilder(trx).select('*').from('users as u');
 
     return query;
   }
@@ -97,10 +67,6 @@ class UserModel extends BaseModel {
         'u.id',
         filters.excludeIds?.split(',').map(id => parseInt(id, 10))
       );
-    }
-
-    if (filters?.role) {
-      query.where(db.raw(`JSON_CONTAINS(roles.roles, JSON_OBJECT('name', ?))`, [filters.role]));
     }
 
     return query;
@@ -149,19 +115,10 @@ class UserModel extends BaseModel {
       id: user.id,
       name: user.name,
       country: user.country,
-      designationId: user.designationId,
       email: user.email,
       phone: user.phone,
+      designation: user.designation,
       department: user.department,
-      designation: user.designationId && {
-        id: user.designationId,
-        name: user.designationName,
-      },
-      manager: user.managerId && {
-        id: user.managerId,
-        name: user.managerName,
-      },
-      roles: user.roles,
     };
 
     return data as User;
