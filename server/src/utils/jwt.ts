@@ -56,7 +56,8 @@ export function verify(token: string) {
     if (err.name === 'TokenExpiredError') {
       throw new TokenError(en.TOKEN_EXPIRED);
     }
-    throw new TokenError(en.INVALID_TOKEN);
+
+    // throw new TokenError(en.INVALID_TOKEN);
   }
 }
 

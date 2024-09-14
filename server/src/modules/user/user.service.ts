@@ -81,9 +81,11 @@ export const fetchCurrentUser = async (): Promise<User | null> => {
 export const signIn = async (body: { email: string; password: string }): Promise<User> => {
   log.info(`Signing in user with email: ${body.email}`);
 
+  console.log(body);
+
   const [existingUser] = await UserModel.fetch({ email: body.email });
 
-  console.log(existingUser);
+  console.log({ existingUser });
 
   if (!existingUser) {
     throw new BadRequestError('User not found.');
