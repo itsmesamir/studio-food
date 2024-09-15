@@ -4,11 +4,13 @@ import BaseModel from '@/models/baseModel';
 
 import { User, UserBody, UserFilters } from '@/types/user';
 import { Any } from '@/types/common';
+import { PaginationProps } from '@/types/pagination';
 
 import db from '@/db';
 
 class OrderModel extends BaseModel {
-  static table = 'users';
+  static readonly table = 'user_orders';
+  static readonly users = 'users';
 
   /**
    * Insert data into user table.
@@ -21,46 +23,59 @@ class OrderModel extends BaseModel {
     return this.queryBuilder(trx).table(this.table).insert(data);
   }
 
-  /**
-   * Fetch users.
-   *
-   * @param {id} number
-   * @param {Knex.Transaction} trx
-   * @returns
-   */
-  static baseQuery(trx?: Knex.Transaction) {
-    const rolesQuery = this.queryBuilder(trx)
-      .from('user_roles as ur')
-      .leftJoin('roles as r', 'ur.role_id', 'r.id')
-      .select(
-        'ur.user_id',
-        db.raw("JSON_ARRAYAGG(JSON_OBJECT('id', r.id, 'name', r.name)) as roles")
-      )
-      .groupBy('ur.user_id');
-
-    const query = this.queryBuilder(trx)
-      .select(
-        'u.id as id',
-        'u.name as name',
-        'u.email as email',
-        'c.name as country',
-        'u.department as department',
-        'u.phone as phone',
-        'u.designation_id as designationId',
-        'd.id as designation_id',
-        'd.name as designation_name',
-        'roles.roles as roles',
-        'm.id as manager_id',
-        'm.name as manager_name'
-      )
-      .from('users as u')
-      .leftJoin(rolesQuery.as('roles'), 'u.id', 'roles.user_id')
-      .leftJoin('designations as d', 'u.designation_id', 'd.id')
-      .leftJoin('countries as c', 'u.country_id', 'c.id')
-      .leftJoin('users as m', 'u.manager_id', 'm.id');
-
-    return query;
+  static baseQuery(trx?: Knex.Transaction): Knex.QueryBuilder {
+    return this.queryBuilder(trx)
+      .select({
+        id: 'uo.id',
+        userId: 'uo.user_id',
+        mealType: 'uo.meal_type',
+        orderTime: 'uo.order_time',
+        createdAt: 'uo.created_at',
+        createdBy: 'uo.created_by',
+        updatedAt: 'uo.updated_at',
+        updatedBy: 'uo.updated_by',
+      })
+      .from({ uo: this.table })
+      .whereNull('uo.deletedAt')
+      .orderBy('uo.created_at', 'desc');
   }
+
+  static mapToModel(obj: Any) {
+    return {
+      id: obj.id,
+      mealType: obj.mealType,
+      orderTime: obj.orderTime,
+      user: obj.userId && {
+        id: obj.userId,
+        name: obj.userName,
+        designation: obj.userDesignation,
+        department: obj.userDepartment,
+      },
+      createdAt: obj.createdAt,
+      createdBy: obj.createdBy,
+    };
+  }
+
+  static async fetchOrders(pagination: PaginationProps) {
+    const query = this.baseQuery()
+      .select({
+        id: 'u.id',
+        name: 'u.name',
+        designation: 'u.designation',
+        department: ' u.department',
+      })
+      .leftJoin({ u: this.users }, 'u.id', 'uo.user_id');
+
+    console.log(query.toString());
+
+    this.injectPagination(query, pagination);
+
+    return query.then(q => this.mapToModel(q));
+  }
+
+  // static async create(order, query: Knex.QueryBuilder) {
+  //   return this.queryBuilder().table(this.table).insert(order);
+  // }
 
   /**
    * Fetch users.
@@ -142,29 +157,6 @@ class OrderModel extends BaseModel {
       .where('id', userId);
 
     return query;
-  }
-
-  static mapToModel(user: Any): User {
-    const data = user.id && {
-      id: user.id,
-      name: user.name,
-      country: user.country,
-      designationId: user.designationId,
-      email: user.email,
-      phone: user.phone,
-      department: user.department,
-      designation: user.designationId && {
-        id: user.designationId,
-        name: user.designationName,
-      },
-      manager: user.managerId && {
-        id: user.managerId,
-        name: user.managerName,
-      },
-      roles: user.roles,
-    };
-
-    return data as User;
   }
 }
 

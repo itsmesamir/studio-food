@@ -1,7 +1,8 @@
 import { Router } from 'express';
 
-import swaggerRoute from '@/modules/swagger/swagger.route';
 import usersRoute from '@/modules/user/user.route';
+import ordersRoute from '@/modules/orders/orders.route';
+import swaggerRoute from '@/modules/swagger/swagger.route';
 
 import { addToStore } from '@/services/store';
 
@@ -36,6 +37,8 @@ router.use((req, _, next) => {
 router.use(authMiddleware);
 
 router.use('/users', usersRoute);
+
+router.use('/orders', ordersRoute);
 
 router.use(requireAuth);
 router.use('/api-docs', swaggerRoute);

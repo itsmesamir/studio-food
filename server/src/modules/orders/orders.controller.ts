@@ -1,17 +1,28 @@
 import { Request, Response } from 'express';
 import HttpStatus from 'http-status-codes';
 
+import { PageProps } from '@/types/pagination';
+
 import * as orderService from './orders.service';
 
+export const createOrder = async (req: Request, res: Response) => {
+  const { userId, mealType } = req.body;
+};
+
 /**
- * Get all users.
+ * Get all orders.
  *
  * @param {Request} req
  * @param {Response} res
  * @returns {Promise<Response>}
  */
-export const fetchOrders = async (req: Request, res: Response) => {
-  const users = await orderService.fetchOrders(req.query);
 
-  return res.status(HttpStatus.OK).json({ data: users });
+type OrderProps = Partial<PageProps>;
+
+export const fetchOrders = async (req: Request, res: Response) => {
+  const { page, size }: OrderProps = req.query;
+
+  const data = await orderService.fetchOrders({ page, size });
+
+  return res.status(HttpStatus.OK).json({ data });
 };

@@ -8,6 +8,12 @@ exports.up = function (knex: Knex): Promise<void> {
     table.timestamp('order_time').defaultTo(knex.fn.now());
 
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
+    table
+      .specificType('created_by', 'bigint(19)')
+      .unsigned()
+      .references('id')
+      .inTable('users')
+      .nullable();
     table.timestamp('updated_at');
 
     table

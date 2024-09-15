@@ -1,18 +1,17 @@
 import { Router } from 'express';
 
-import { validateReqBody } from '@/utils/validator';
-
-import { Roles } from '@/types/common';
+import { validateReqQuery } from '@/utils/validator';
 
 import { requireAuth } from '@/middlewares/auth';
-import { authorizeWithRoles } from '@/middlewares/authorizeWIthRoles';
 
+import * as orderSchema from './orders.validator';
 import * as orderController from './orders.controller';
-import * as orderValidator from './orders.validator';
 
 const router = Router();
 
 // TODO: use requireAuth
-router.get('/', orderController.fetchOrders);
+router.get('/', requireAuth, validateReqQuery(orderSchema.fetch), orderController.fetchOrders);
+
+router.get('/', requireAuth, validateReqQuery(orderSchema.fetch), orderController.fetchOrders);
 
 export default router;

@@ -14,7 +14,7 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
   const authHeader = req.headers['authorization'];
   const accessToken = authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1];
 
-  if (!accessToken || accessToken !== 'undefined') {
+  if (!accessToken || accessToken === 'undefined') {
     addToStore({ currentUser: null });
 
     next();
@@ -33,6 +33,8 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
 
 export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   const currentUser = getFromStore('currentUser');
+
+  console.log(currentUser);
 
   if (!currentUser) {
     throw new UnauthorizedError('Forbidden. User not authenticated.');

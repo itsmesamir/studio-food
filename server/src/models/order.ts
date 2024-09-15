@@ -45,11 +45,20 @@ class Order extends BaseModel {
   }
 
   static async getOrders(pagination: PaginationProps) {
-    const query = await this.baseQuery();
+    const query = this.baseQuery()
+      .select({
+        id: 'u.id',
+        name: 'u.name',
+        designation: 'u.designation',
+        department: ' u.department',
+      })
+      .leftJoin({ u: this.users }, 'u.id', 'uo.user_id');
+
+    console.log(query.toString());
 
     this.injectPagination(query, pagination);
 
-    return query.map(this.mapToModel);
+    return query.then(q => this.mapToModel(q));
   }
 }
 
