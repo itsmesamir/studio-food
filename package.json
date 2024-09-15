@@ -5,24 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start": "node server/dist/src/index.js",
+    "start": "cd server && yarn run start",
     "dev": "cross-env NODE_ENV=development nodemon",
     "transpile": "tsc",
     "clean": "rimraf server/dist",
-    "build": "yarn clean && yarn transpile",
+    "build": "cd server && yarn clean && yarn transpile",
+    "heroku-postbuild": "yarn build",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest",
-    "test:watch": "jest --watch --no-cache",
-    "knex": "knex --knexfile=src/knexFile.ts",
-    "seed": "yarn knex seed:run --verbose",
-    "migrate": "yarn knex migrate:latest --verbose",
-    "rollback": "yarn knex migrate:rollback --verbose",
-    "make:seeder": "yarn knex seed:make -x ts --env development",
-    "make:migration": "yarn knex migrate:make -x ts --env development",
-    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --list-different",
-    "prettier:format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "swagger:gen": "node ./swagger.js"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -88,20 +79,7 @@
     "swagger-ui-express": "^5.0.0",
     "to-snake-case": "^1.0.0",
     "ts-jest": "^29.1.2",
+    "tsconfig-paths": "^4.2.0",
     "winston": "^3.11.0"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/test/setup.ts"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ]
   }
 }

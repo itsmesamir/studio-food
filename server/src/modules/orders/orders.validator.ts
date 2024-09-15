@@ -25,3 +25,8 @@ export const updateUserSchema = Joi.object({
   roleIds: Joi.array().items(Joi.number().required()).required(),
   excludeIds: Joi.string().optional(),
 });
+
+export const fetch = Joi.object({
+  page: Joi.number().integer().min(1).default(1),
+  size: Joi.number().integer().min(1).max(40).default(40),
+});

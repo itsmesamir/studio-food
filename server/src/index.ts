@@ -1,6 +1,6 @@
-import App from 'app';
 import config from 'config';
 import route from 'route';
+import App from 'app';
 
 const port = config.app.port;
 
