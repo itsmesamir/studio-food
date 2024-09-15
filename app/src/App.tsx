@@ -25,9 +25,9 @@ const queryClient = new QueryClient({
 const App = () => {
   const { loading, fetchUser } = useUserStore();
 
-  const dd = useUsersQuery();
+  // const dd = useUsersQuery();
 
-  console.log(dd.data);
+  // console.log(dd.data);
 
   useEffect(() => {
     fetchUser();
