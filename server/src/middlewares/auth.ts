@@ -34,8 +34,6 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
 export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   const currentUser = getFromStore('currentUser');
 
-  console.log(currentUser);
-
   if (!currentUser) {
     throw new UnauthorizedError('Forbidden. User not authenticated.');
   }

@@ -3,8 +3,6 @@ import { Knex } from 'knex';
 import { PaginationProps } from '@/types/pagination';
 import { Any } from '@/types/common';
 
-import db from 'db';
-
 import BaseModel from './baseModel';
 
 class Order extends BaseModel {
@@ -53,8 +51,6 @@ class Order extends BaseModel {
         department: ' u.department',
       })
       .leftJoin({ u: this.users }, 'u.id', 'uo.user_id');
-
-    console.log(query.toString());
 
     this.injectPagination(query, pagination);
 

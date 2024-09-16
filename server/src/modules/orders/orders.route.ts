@@ -14,4 +14,6 @@ router.get('/', requireAuth, validateReqQuery(orderSchema.fetch), orderControlle
 
 router.get('/', requireAuth, validateReqQuery(orderSchema.fetch), orderController.fetchOrders);
 
+router.post('/', requireAuth, validateReqQuery(orderSchema.create), orderController.createOrder);
+
 export default router;
