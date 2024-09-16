@@ -71,9 +71,15 @@ class OrderModel extends BaseModel {
     return query.then(q => this.mapToModel(q));
   }
 
-  // static async create(order, query: Knex.QueryBuilder) {
-  //   return this.queryBuilder().table(this.table).insert(order);
-  // }
+  static async createOrder({ userId, mealType }: { userId: number; mealType: string }) {
+    const data = await db(this.table).insert({
+      user_id: userId,
+      meal_type: mealType,
+      order_time: new Date(),
+    });
+
+    return data;
+  }
 
   /**
    * Fetch users.

@@ -30,3 +30,8 @@ export const fetch = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   size: Joi.number().integer().min(1).max(40).default(40),
 });
+
+export const create = Joi.object({
+  userId: Joi.number().required(),
+  meal_type: Joi.string().required(),
+});

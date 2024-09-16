@@ -7,6 +7,10 @@ import * as orderService from './orders.service';
 
 export const createOrder = async (req: Request, res: Response) => {
   const { userId, mealType } = req.body;
+
+  const data = await orderService.createOrder({ userId, mealType });
+
+  return res.status(HttpStatus.CREATED).json({ data });
 };
 
 /**

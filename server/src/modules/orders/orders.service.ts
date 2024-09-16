@@ -3,6 +3,7 @@ import logger from '@/services/logger';
 import { getPaginationOptions } from '@/utils/pagination';
 
 import { PageProps } from '@/types/pagination';
+import { Any } from '@/types/common';
 
 import OrderModel from './orders.model';
 
@@ -25,8 +26,15 @@ export const fetchOrders = async (query: PageProps) => {
   return data;
 };
 
-export const createOrder = async (req: Request, res: Response) => {
+/**
+ * Create a new order.
+ *
+ * @returns A promise that resolves to the created order object.
+ */
+export const createOrder = async (data: Any) => {
   log.info('Creating Order');
 
-  // const { data } = OrderModel.create();
+  const order = await OrderModel.createOrder(data);
+
+  return order;
 };
