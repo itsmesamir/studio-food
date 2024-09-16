@@ -100,9 +100,13 @@ class App {
   }
 
   public listen(port: number) {
-    this.app.listen(port, () => {
-      log.info(`Server started at http://localhost:${port}`);
-    });
+    this.app
+      .listen(port, () => {
+        log.info(`Server started at http://localhost:${port}`);
+      })
+      .on('error', err => {
+        log.error('Error starting server:', err);
+      });
   }
 
   private initializeErrorHandlers() {

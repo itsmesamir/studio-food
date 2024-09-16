@@ -34,13 +34,13 @@ router.use((req, _, next) => {
   next();
 });
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.use('/users', usersRoute);
 
 router.use('/orders', ordersRoute);
 
-router.use(requireAuth);
+// router.use(requireAuth);
 router.use('/api-docs', swaggerRoute);
 
 export default router;
