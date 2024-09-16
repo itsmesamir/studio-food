@@ -66,8 +66,6 @@ class OrderModel extends BaseModel {
       })
       .leftJoin({ u: this.users }, 'u.id', 'uo.user_id');
 
-    console.log(query.toString());
-
     this.injectPagination(query, pagination);
 
     return query.then(q => this.mapToModel(q));

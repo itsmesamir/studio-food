@@ -6,12 +6,13 @@ import express, { Application, Router, json, urlencoded } from 'express';
 import cookieParser from 'cookie-parser';
 import 'express-async-errors';
 
+import { addToStore, initializeStore } from '@/services/store';
+import logger from '@/services/logger';
+
 import { notFoundError, genericErrorHandler } from '@/middlewares/errorHandler';
 import requestLogger from '@/middlewares/requestLogger';
 
 import config from 'config';
-import logger from 'services/logger';
-import { addToStore, initializeStore } from 'services/store';
 
 const log = logger.withNamespace('app');
 
@@ -100,7 +101,7 @@ class App {
 
   public listen(port: number) {
     this.app.listen(port, () => {
-      console.log(`Server started at http://localhost:${port}`);
+      log.info(`Server started at http://localhost:${port}`);
     });
   }
 

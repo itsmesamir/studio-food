@@ -10,7 +10,7 @@ import { compareHash, generateHash } from '@/utils/crypto';
 import { BadRequestError } from '@/errors/errors';
 
 import { User, UserFilters } from '@/types/user';
-import { Designation, Role, Roles, UserRole } from '@/types/common';
+import { Role, UserRole } from '@/types/common';
 
 import db from '@/db';
 
@@ -81,11 +81,7 @@ export const fetchCurrentUser = async (): Promise<User | null> => {
 export const signIn = async (body: { email: string; password: string }): Promise<User> => {
   log.info(`Signing in user with email: ${body.email}`);
 
-  console.log(body);
-
   const [existingUser] = await UserModel.fetch({ email: body.email });
-
-  console.log({ existingUser });
 
   if (!existingUser) {
     throw new BadRequestError('User not found.');
@@ -144,7 +140,7 @@ export const fetchUserRolesByUserId = async (
   return roles;
 };
 
-async function updateRoles(
+export async function updateRoles(
   newRoles: Role[],
   userRoles: UserRole[],
   userId: number,
@@ -178,9 +174,7 @@ async function updateRoles(
 export const updateUserById = async (id: number, body: Partial<User>): Promise<User> => {
   log.info(`Updating user with ID: ${id}`);
 
-  const { roleIds, ...userBody } = body;
-
-  const { designationId, managerId } = userBody;
+  const { ...userBody } = body;
 
   const [existingUser] = await UserModel.fetchUserDetails({ id });
 
