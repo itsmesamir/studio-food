@@ -12,8 +12,6 @@ const router = Router();
 // TODO: use requireAuth
 router.get('/', requireAuth, validateReqQuery(orderSchema.fetch), orderController.fetchOrders);
 
-router.get('/', requireAuth, validateReqQuery(orderSchema.fetch), orderController.fetchOrders);
-
 router.post('/', requireAuth, validateReqQuery(orderSchema.create), orderController.createOrder);
 
 export default router;

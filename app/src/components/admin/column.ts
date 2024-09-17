@@ -1,3 +1,4 @@
+import moment from "moment";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 
 import { TextCell } from "./tableCells";
@@ -7,43 +8,72 @@ export const columns = (): Array<ColumnDef<Order>> => {
     {
       header: "S/N",
       accessorKey: "sn",
-      size: 56,
+      size: 10,
       enableSorting: false,
       enableColumnFilter: false,
       cell: (props: CellContext<Order, unknown>) =>
         TextCell(props.row.index + 1),
     },
-
+    {
+      header: "User ID",
+      accessorKey: "userId",
+      size: 20,
+      cell: (props: CellContext<Order, unknown>) =>
+        TextCell(
+          props.row.original.user.id,
+          "capital-text employees__table-text"
+        ),
+    },
     {
       header: "Name",
       accessorKey: "name",
-      size: 325,
+      size: 150,
       cell: (props: CellContext<Order, unknown>) =>
-        TextCell(props.row.original.name, "capital-text employees__table-text"),
+        TextCell(
+          props.row.original.user.name,
+          "capital-text employees__table-text"
+        ),
     },
-
     {
-      header: "MealType",
+      header: "Department",
+      accessorKey: "department",
+      size: 100,
+      cell: (props: CellContext<Order, unknown>) =>
+        TextCell(
+          props.row.original.user.department,
+          "capital-text employees__table-text"
+        ),
+    },
+    {
+      header: "Designation",
+      accessorKey: "designation",
+      size: 100,
+      cell: (props: CellContext<Order, unknown>) =>
+        TextCell(
+          props.row.original.user.designation,
+          "capital-text employees__table-text"
+        ),
+    },
+    {
+      header: "Meal Type",
       accessorKey: "mealType",
-      size: 325,
+      size: 125,
       cell: (props: CellContext<Order, unknown>) =>
         TextCell(
           props.row.original.mealType,
           "capital-text employees__table-text"
         ),
     },
-
     {
-      header: "OrderTime",
+      header: "Order Time",
       accessorKey: "orderTime",
-      size: 325,
+      size: 150,
       cell: (props: CellContext<Order, unknown>) =>
         TextCell(
-          props.row.original.orderTime,
+          moment(props.row.original.orderTime).format("YYYY-MM-DD hh:mm A"),
           "capital-text employees__table-text"
         ),
     },
-
     // {
     //   header: " ",
     //   accessorKey: "actions",

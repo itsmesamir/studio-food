@@ -33,5 +33,5 @@ export const fetch = Joi.object({
 
 export const create = Joi.object({
   userId: Joi.number().required(),
-  meal_type: Joi.string().required(),
+  mealType: Joi.string().required(),
 });

@@ -9,9 +9,6 @@ import PrivateRoute from "./components/PrivateRoute";
 import Error from "./components/Error";
 
 import useUserStore from "stores/useUserStore";
-import AuthRoute from "components/Auth/AuthRoute";
-import { useUsersQuery } from "hooks/useUserQuery";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({
@@ -24,10 +21,6 @@ const queryClient = new QueryClient({
 
 const App = () => {
   const { loading, fetchUser } = useUserStore();
-
-  // const dd = useUsersQuery();
-
-  // console.log(dd.data);
 
   useEffect(() => {
     fetchUser();
@@ -44,30 +37,14 @@ const App = () => {
         <div className="mx-auto">
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/scan" element={<ScanOrder />} />
-
-            <Route path="/" element={<AuthRoute />}>
-              <Route
-                path="/admin"
-                element={<PrivateRoute component={AdminTable} role="admin" />} // Only admin users can access this route
-              />
-              {/* <Route
-            path="/scan"
-            element={<PrivateRoute component={ScanOrder} role="user" />} // Only authenticated users can access this route
-            /> */}
-              <Route path="/unauthorized" element={<Error />} />
-              <Route
-                path="/"
-                element={
-                  <div className="text-center">
-                    <h1 className="text-4xl font-bold">
-                      Welcome to the Food Order App
-                    </h1>
-                    <p className="mt-4">Please log in to continue.</p>
-                  </div>
-                }
-              />
+            <Route path="/scan" element={<PrivateRoute role="user" />}>
+              <Route path="" element={<ScanOrder />} />
             </Route>
+
+            <Route path="/admin" element={<PrivateRoute role="admin" />}>
+              <Route path="" element={<AdminTable />} />
+            </Route>
+
             <Route path="*" element={<Error />} />
           </Routes>
         </div>

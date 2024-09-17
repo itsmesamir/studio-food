@@ -15,8 +15,6 @@ export function handleLogin({ accessToken, refreshToken }: any) {
 export function handleLogout() {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
-
-  //   window.location.reload();
 }
 
 const API_URL = "http://localhost:5555/api";

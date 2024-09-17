@@ -15,7 +15,7 @@ const AuthRoute = () => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // If the user is authenticated, render child routes via Outlet
+  // if user is authenticated, render the child routes
   return <Outlet />;
 };
 

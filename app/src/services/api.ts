@@ -11,7 +11,7 @@ export const getOrders = (params: any) => http.get("/orders", { params });
 export const getUserById = (id: string) => http.get(`/users/${id}`);
 
 export const getCurrentUser = async () => {
-  const response = await http.get(`/users/current`);
+  const response = await http.get(`/users/currentuser`);
 
   return response.data;
 };

@@ -18,11 +18,15 @@ const Login: React.FC = () => {
 
       // Save the token to localStorage (if needed)
       localStorage.setItem("accessToken", data.tokens.accessToken);
+      localStorage.setItem("refreshToken", data.tokens.refreshToken);
+
+      // set user role in localStorage
+      localStorage.setItem("userRole", data.user.roles);
 
       // Update user state in zustand
       updateUser({ ...data.user });
 
-      navigate("/");
+      navigate("/scan");
     } catch (error) {
       console.error("Login failed:", error);
     }
