@@ -11,6 +11,7 @@ import "../../../src/scanOrder.css";
 import { getMealType } from "utils/order";
 import { MealType } from "enums/order";
 import MealSelector from "./MealSelector";
+import http from "services/http";
 
 interface UserDetails {
   id: string;
@@ -59,8 +60,8 @@ const ScanOrder = () => {
     }
 
     try {
-      await axios.post(
-        "http://localhost:5555/api/orders",
+      await http.post(
+        "/orders",
         {
           userId: userDetails.id,
           mealType: selectedMealType,

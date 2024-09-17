@@ -3,9 +3,10 @@ import Table from "../table/Table";
 import { columns } from "./column";
 import useFilters from "hooks/useFilter";
 import { DefaultFilter, Filters } from "interface/filter";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FilterType } from "enums/filter";
 import { MealType } from "enums/order";
+import http from "services/http";
 
 enum OrderFilterID {
   userIds = "userIds",
@@ -20,17 +21,19 @@ const DEFAULT_FILTERS: DefaultFilter<OrderFilterID> = {
 };
 
 const AdminTable = () => {
-  // const [data, setData] = React.useState([]);
+  const [data, setData] = useState([]);
 
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get("/api/orders", {
-  //       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  //     });
-  //     setData(res.data);
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await http.get("/orders", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setData(res.data);
+    };
+    fetchData();
+  }, []);
 
   const filters: Filters<OrderFilterID>[] = useMemo(
     () => [
@@ -103,60 +106,19 @@ const AdminTable = () => {
       <Table<Order>
         loading={false}
         columns={columns()}
-        data={[
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-          {
-            name: "John Doe",
-            mealType: "Breakfast",
-            orderTime: "2021-09-01",
-          },
-        ]}
+        data={data}
         getRowCanExpand={() => true}
         emptyMessage=""
         parentClassName="px-4"
-        // pagination={{
-        //   pageCount: 1,
-        //   pageData: {
-        //     page: 1,
-        //     pageSize: 1,
-        //     total: 1,
-        //     count: 1,
-        //   },
-        // }}
+        pagination={{
+          pageCount: 1,
+          pageData: {
+            page: 1,
+            pageSize: 1,
+            total: 1,
+            count: 1,
+          },
+        }}
       />
     </div>
   );

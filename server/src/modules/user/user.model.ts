@@ -119,6 +119,7 @@ class UserModel extends BaseModel {
       phone: user.phone,
       designation: user.designation,
       department: user.department,
+      roles: user.role,
     };
 
     return data as User;

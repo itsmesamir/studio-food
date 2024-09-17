@@ -12,7 +12,12 @@ import * as userValidator from './user.validator';
 
 const router = Router();
 
-// TODO: use requireAuth
+router.post('/signin', validateReqBody(userValidator.signInSchema), userController.signIn);
+
+router.post('/signup', validateReqBody(userValidator.signUpSchema), userController.signUp);
+
+router.post('/signout', userController.signOut);
+
 router.get('/', userController.fetchUsers);
 
 router.get('/currentuser', userController.fetchCurrentUser);
@@ -30,11 +35,5 @@ router.put(
   }),
   userController.updateUserById
 );
-
-router.post('/signin', validateReqBody(userValidator.signInSchema), userController.signIn);
-
-router.post('/signup', validateReqBody(userValidator.signUpSchema), userController.signUp);
-
-router.post('/signout', userController.signOut);
 
 export default router;

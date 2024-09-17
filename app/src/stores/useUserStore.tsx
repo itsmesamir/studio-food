@@ -60,7 +60,9 @@ const useUserStore = create<TUserStore>()((set) => ({
 
   logout: () => {
     set({ data: null });
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userRole");
   },
 }));
 

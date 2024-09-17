@@ -47,9 +47,9 @@ class OrderModel extends BaseModel {
       orderTime: obj.orderTime,
       user: obj.userId && {
         id: obj.userId,
-        name: obj.userName,
-        designation: obj.userDesignation,
-        department: obj.userDepartment,
+        name: obj.name,
+        designation: obj.designation,
+        department: obj.department,
       },
       createdAt: obj.createdAt,
       createdBy: obj.createdBy,
@@ -68,7 +68,7 @@ class OrderModel extends BaseModel {
 
     this.injectPagination(query, pagination);
 
-    return query.then(q => this.mapToModel(q));
+    return query.then(q => q.map(this.mapToModel));
   }
 
   static async createOrder({ userId, mealType }: { userId: number; mealType: string }) {

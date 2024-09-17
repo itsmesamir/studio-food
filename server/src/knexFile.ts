@@ -4,8 +4,6 @@ import config from './config';
 
 const { database: dbConfig } = config;
 
-console.log('dbConfig', dbConfig);
-
 export const baseKnexConfig = {
   client: dbConfig.client || 'mysql2',
   connection: {
