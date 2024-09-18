@@ -2,14 +2,10 @@
   "name": "studio-order",
   "version": "1.0.0",
   "description": "",
-  "workspaces": [
-    "app",
-    "server"
-  ],
   "scripts": {
     "start": "node server/dist/src/index.js",
-    "build": "yarn workspaces app build",
-    "heroku-postbuild": "yarn workspaces app build"
+    "build": "cd app && yarn run build",
+    "heroku-postbuild": "yarn run build"
   },
   "author": "",
   "license": "ISC",
