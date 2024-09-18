@@ -1,1 +1,1 @@
-web: pwd && cd server && yarn run start
+web: cd server && yarn run build && yarn run start
