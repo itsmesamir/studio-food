@@ -23,10 +23,10 @@
     "esModuleInterop": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
-    "rootDir": "./"
+    "rootDir": "./src"
   },
 
   "types": ["node", "jest"],
-  "exclude": ["node_modules", "dist", "coverage"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "src/**/*.json", ".env"]
+  "exclude": ["node_modules", "**/*.test.ts", "coverage"],
+  "include": ["src/**/*.ts", "src/**/*.json", ".env"]
 }
