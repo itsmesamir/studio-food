@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Login from "./components/Auth/Login";
@@ -10,6 +10,7 @@ import Error from "./components/Error";
 
 import useUserStore from "stores/useUserStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Unauthorized from "components/Unauthorized";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,7 +38,7 @@ const App = () => {
         <div className="mx-auto">
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/scan" element={<PrivateRoute role="user" />}>
+            <Route path="/scan" element={<PrivateRoute  />}>
               <Route path="" element={<ScanOrder />} />
             </Route>
 
@@ -45,8 +46,11 @@ const App = () => {
               <Route path="" element={<AdminTable />} />
             </Route>
 
-            <Route path="*" element={<Error />} />
-          </Routes>
+            <Route path="/unauthorized" element={<Unauthorized />} />
+
+
+            <Route path="*" element={<Navigate to="/scan" replace />} />
+            </Routes>
         </div>
       </Router>
     </QueryClientProvider>
