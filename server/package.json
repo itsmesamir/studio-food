@@ -7,6 +7,7 @@
     "start:dev": "cross-env NODE_ENV=development nodemon",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon",
+    "heroku-postbuild": "yarn build",
     "transpile": "tsc",
     "clean": "rimraf dist",
     "build": "yarn clean && yarn transpile",
