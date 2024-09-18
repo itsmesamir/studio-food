@@ -49,11 +49,11 @@ class App {
     this.app.use(initializeStore());
     this.app.use(requestLogger);
 
-    // Adding session to the store
-    this.app.use(async (req, res, next) => {
-      addToStore({ session: req.session });
-      return next();
-    });
+    // // Adding session to the store
+    // this.app.use(async (req, res, next) => {
+    //   addToStore({ session: req.session });
+    //   return next();
+    // });
 
     this.connectToDatabase();
 
