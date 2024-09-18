@@ -1,5 +1,8 @@
 import Joi from 'joi';
 
+import { commaSeparatedEnumValidator, commaSeparatedNumbers } from '@/schemas/common';
+import { paginationSchema } from '@/schemas/pagination';
+
 export const signInSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
@@ -35,3 +38,17 @@ export const create = Joi.object({
   userId: Joi.number().required(),
   mealType: Joi.string().required(),
 });
+
+// Define the enum values
+const MealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Midnight Snack'] as const;
+
+export const fetchSchema = Joi.object({
+  mealType: Joi.string()
+    .custom(commaSeparatedEnumValidator(MealTypes), 'mealType validation')
+    .optional(),
+  userIds: commaSeparatedNumbers('userIds'),
+  date: Joi.date().iso().optional(),
+});
+
+// Combine pagination schema with fetch schema using Joi.concat
+export const fetchOrder = fetchSchema.concat(paginationSchema);

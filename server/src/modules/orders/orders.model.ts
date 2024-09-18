@@ -2,11 +2,14 @@ import { Knex } from 'knex';
 
 import BaseModel from '@/models/baseModel';
 
+import { getFormattedDate } from '@/utils/data';
+
 import { User, UserBody, UserFilters } from '@/types/user';
 import { Any } from '@/types/common';
 import { PaginationProps } from '@/types/pagination';
 
 import db from '@/db';
+import { YYYY_MM_DD, yyyy_MM_dd } from '@/constants/date';
 
 class OrderModel extends BaseModel {
   static readonly table = 'user_orders';
@@ -56,7 +59,7 @@ class OrderModel extends BaseModel {
     };
   }
 
-  static async fetchOrders(pagination: PaginationProps) {
+  static async fetchOrders(pagination: PaginationProps, filter: any) {
     const query = this.baseQuery()
       .select({
         id: 'u.id',
@@ -66,7 +69,11 @@ class OrderModel extends BaseModel {
       })
       .leftJoin({ u: this.users }, 'u.id', 'uo.user_id');
 
+    this.injectOrderFilter(query, filter);
+
     this.injectPagination(query, pagination);
+
+    console.log('query', query.toString());
 
     return query.then(q => q.map(this.mapToModel));
   }
@@ -120,6 +127,35 @@ class OrderModel extends BaseModel {
 
     if (filters?.role) {
       query.where(db.raw(`JSON_CONTAINS(roles.roles, JSON_OBJECT('name', ?))`, [filters.role]));
+    }
+
+    return query;
+  }
+
+  /**
+   * Inject filter in query.
+   *
+   * @param {Knex.QueryBuilder} query
+   * @param {FilterNotesParams} filters
+   */
+  static injectOrderFilter(query: Knex.QueryBuilder, filters: Any) {
+    console.log(
+      'getFormattedDate(filters.date)',
+      getFormattedDate(filters.date, YYYY_MM_DD),
+      filters.date
+    );
+    if (filters?.mealType) {
+      query.whereIn('uo.meal_type', filters.mealType);
+    }
+
+    if (filters?.userIds) {
+      query.whereIn('u.id', filters.userIds);
+    }
+
+    if (filters?.date) {
+      query.whereRaw('CAST(uo.order_time AS DATE) = ?', [
+        getFormattedDate(filters.date, YYYY_MM_DD),
+      ]);
     }
 
     return query;

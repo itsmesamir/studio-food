@@ -31,7 +31,7 @@ function InputWrapper(props: InputWrapperProps) {
       {label && (
         <label
           htmlFor={name}
-          className="text-xs text-grey-60 mb-1 flex items-center"
+          className="text-xs text-gray-60 mb-1 flex items-center"
         >
           {label}
 

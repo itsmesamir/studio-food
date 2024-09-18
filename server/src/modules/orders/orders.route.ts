@@ -10,7 +10,7 @@ import * as orderController from './orders.controller';
 const router = Router();
 
 // TODO: use requireAuth
-router.get('/', validateReqQuery(orderSchema.fetch), orderController.fetchOrders);
+router.get('/', validateReqQuery(orderSchema.fetchOrder), orderController.fetchOrders);
 
 router.post('/', requireAuth, validateReqQuery(orderSchema.create), orderController.createOrder);
 

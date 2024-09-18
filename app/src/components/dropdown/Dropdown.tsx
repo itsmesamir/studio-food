@@ -99,7 +99,13 @@ function Dropdown<OptionType>(props: DropdownProps<OptionType>) {
         placeholder={placeholder}
         value={value}
         isMulti={isMulti}
-        styles={customStyles}
+        styles={{
+          menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999, // Ensure the dropdown is above the modal
+          }),
+          ...customStyles,
+        }}
         filterOption={filterOption}
         controlShouldRenderValue={controlShouldRenderValue}
       />

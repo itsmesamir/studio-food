@@ -8,14 +8,14 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { updateUser, removeUser } = useUserStore();
-  const  [error, setError] = useState(null);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      setError(null)
+      setError(null);
       const { data } = await login(email, password);
 
       // Save the token to localStorage (if needed)
@@ -29,13 +29,13 @@ const Login: React.FC = () => {
     } catch (error: any) {
       console.error("Login failed:", error);
 
-      setError(error?.response?.data?.errors?.[0].message)
+      setError(error?.response?.data?.errors?.[0].message);
     }
   };
 
   return (
     <div className="flex items-center justify-center h-[900px] bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white shadow-lg rounded-md">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white shadow-lg rounded-md mx-4">
         <h2 className="text-2xl font-bold text-center">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -72,8 +72,7 @@ const Login: React.FC = () => {
               required
             />
           </div>
-          {error &&
-          <div className="text-red-600">{error}</div>}
+          {error && <div className="text-red-600">{error}</div>}
           <button
             type="submit"
             className="w-full px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
