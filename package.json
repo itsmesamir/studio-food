@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "start": "node server/dist/src/index.js",
-    "build": "yarn workspace app build",
-    "heroku-postbuild": "yarn workspace app build"
+    "build": "yarn workspaces app build",
+    "heroku-postbuild": "yarn workspaces app build"
   },
   "author": "",
   "license": "ISC",
