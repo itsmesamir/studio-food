@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "start": "cd server && yarn run start",
+    "start": "cd app && yarn run build && cd  ../server && yarn run start",
     "dev": "cross-env NODE_ENV=development nodemon",
     "transpile": "tsc",
     "clean": "rimraf server/dist",
