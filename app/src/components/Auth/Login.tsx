@@ -8,27 +8,28 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { updateUser, removeUser } = useUserStore();
+  const  [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setError(null)
       const { data } = await login(email, password);
 
       // Save the token to localStorage (if needed)
       localStorage.setItem("accessToken", data.tokens.accessToken);
       localStorage.setItem("refreshToken", data.tokens.refreshToken);
 
-      // set user role in localStorage
-      localStorage.setItem("userRole", data.user.roles);
-
       // Update user state in zustand
       updateUser({ ...data.user });
 
       navigate("/scan");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
+
+      setError(error?.response?.data?.errors?.[0].message)
     }
   };
 
@@ -71,6 +72,8 @@ const Login: React.FC = () => {
               required
             />
           </div>
+          {error &&
+          <div className="text-red-600">{error}</div>}
           <button
             type="submit"
             className="w-full px-4 py-2 font-bold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
