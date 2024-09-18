@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server/dist/src/index.js",
+    "start": "cd server && yarn run start",
     "build": "cd app && yarn run build",
     "heroku-postbuild": "yarn run build"
   },
