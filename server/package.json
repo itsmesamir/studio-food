@@ -12,8 +12,6 @@
     "build": "yarn clean && yarn transpile",
     "lint": "eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "npm run lint -- --fix",
-    "test": "jest",
-    "test:watch": "jest --watch --no-cache",
     "knex": "knex --knexfile=src/knexFile.ts",
     "seed": "yarn knex seed:run --verbose",
     "migrate": "yarn knex migrate:latest --verbose",
