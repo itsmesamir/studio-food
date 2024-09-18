@@ -6,7 +6,7 @@ import useUserStore from "stores/useUserStore";
 const Navbar = () => {
   const { data: currentUser, logout } = useUserStore();
 
-  const isAdmin = true;
+  const isAdmin = currentUser?.role === "admin";
 
   const navigate = useNavigate();
 

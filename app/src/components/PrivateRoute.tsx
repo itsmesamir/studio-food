@@ -1,9 +1,13 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import useUserStore from "stores/useUserStore";
 
 const PrivateRoute = ({ role }: any) => {
-  const isAuthenticated = !!localStorage.getItem("accessToken");
-  const userRole = localStorage.getItem("userRole");
+
+  const {data: user} = useUserStore();
+
+  const isAuthenticated = !!user;
+  const userRole = user?.role
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
