@@ -30,7 +30,7 @@ class App {
     this.app.use(helmet());
     this.app.use(compression());
 
-    this.app.use(express.static(path.join(appPath)));
+    this.app.use(express.static(appPath));
 
     // Catch all non-API routes and serve index.html
     this.app.get('*', (req, res, next) => {
