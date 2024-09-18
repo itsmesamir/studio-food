@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #fafafa;
+}
+
 /* styles.css or equivalent */
 @keyframes spin {
   0% {
@@ -17,4 +21,28 @@
   width: 30px;
   height: 30px;
   animation: spin 1s linear infinite;
+}
+
+*::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-gray-300;
+  border-radius: 4px;
+
+  &:hover {
+    @apply bg-gray-600;
+  }
+}
+
+.btn-primary {
+  @apply bg-green-500 text-sm text-white px-4 py-2 rounded-lg hover:bg-green-600 h-10 max-h-[40px]
+  focus:outline-none focus:ring focus:ring-green-500 focus:border-green-500 cursor-pointer;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-sm text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 h-10 max-h-[40px]
+  focus:outline-none focus:ring focus:ring-gray-400 focus:border-gray-400 cursor-pointer;
 }
