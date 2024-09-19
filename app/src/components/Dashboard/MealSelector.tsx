@@ -10,7 +10,7 @@ function MealSelector(props: MealSelectorProps) {
   const { selectedMeal, onMealChange, mealOptions } = props;
 
   return (
-    <div className="meal-type mt-4">
+    <div className="meal-type mt-2 mb-2 min-w-[200px] border p-2 border-gray-300 rounded-md">
       <label className="block text-gray-700 text-sm font-bold mb-2">
         Meal Type:
       </label>

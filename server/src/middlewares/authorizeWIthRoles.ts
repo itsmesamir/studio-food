@@ -94,3 +94,19 @@ export const authorizeUserManager = async ({
     throw new BadRequestError(error);
   }
 };
+
+export const authorizeAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  const currentUser = getFromStore('currentUser');
+
+  if (!currentUser) {
+    return false;
+  }
+
+  const isAdmin = currentUser.roles === 'admin';
+
+  if (isAdmin) {
+    return next();
+  }
+
+  next(new ForbiddenError('Forbidden'));
+};
