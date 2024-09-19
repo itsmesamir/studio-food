@@ -3,11 +3,14 @@ import { Navigate, Outlet } from "react-router-dom";
 import useUserStore from "stores/useUserStore";
 
 const PrivateRoute = ({ role }: any) => {
-
-  const {data: user} = useUserStore();
+  const { data: user, loading } = useUserStore();
 
   const isAuthenticated = !!user;
-  const userRole = user?.role
+  const userRole = user?.roles;
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
@@ -17,7 +20,7 @@ const PrivateRoute = ({ role }: any) => {
     return <Navigate to="/unauthorized" />;
   }
 
-  return <Outlet />; // Renders child routes if user is authenticated and has the required role
+  return <Outlet />;
 };
 
 export default PrivateRoute;

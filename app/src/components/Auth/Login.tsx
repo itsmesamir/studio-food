@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import useUserStore from "../../stores/useUserStore";
 import { login } from "services/api";
@@ -11,6 +11,14 @@ const Login: React.FC = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+
+  // if user is already logged in, redirect to scan page
+  const user = useUserStore((state) => state.data);
+  useEffect(() => {
+    if (user) {
+      navigate("/scan");
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

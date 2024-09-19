@@ -6,6 +6,7 @@ interface User {
   email: string;
   token: string;
   role: string;
+  roles: string;
 }
 
 interface TUserState {

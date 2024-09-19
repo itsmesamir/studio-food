@@ -6,7 +6,7 @@ import useUserStore from "stores/useUserStore";
 const Navbar = () => {
   const { data: currentUser, logout } = useUserStore();
 
-  const isAdmin = currentUser?.role === "admin";
+  const isAdmin = currentUser?.roles === "admin";
 
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-500 p-4">
+    <nav className="bg-gradient-to-r from-pink-500 to-blue-500 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-white text-lg font-bold">
           {/* TODO: Fix the logo */}

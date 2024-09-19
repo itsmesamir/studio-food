@@ -34,7 +34,7 @@ router.use((req, _, next) => {
   next();
 });
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.use('/users', usersRoute);
 

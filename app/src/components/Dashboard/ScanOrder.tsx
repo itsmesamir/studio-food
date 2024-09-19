@@ -6,6 +6,7 @@ import {
   FaRegTimesCircle,
   FaCheckCircle,
   FaRedoAlt,
+  FaHome,
 } from "react-icons/fa";
 import "../../../src/scanOrder.css";
 import { getMealType } from "utils/order";
@@ -67,7 +68,9 @@ const ScanOrder = () => {
           mealType: selectedMealType,
         },
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       );
       alert("Order successfully recorded!");
@@ -92,21 +95,40 @@ const ScanOrder = () => {
 
   return (
     <div className="container mx-auto p-6 bg-gray-100 rounded-lg shadow-lg tablet-max:w-1/2 tablet-max:mx-auto">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">
-        Scan and Place Order
-      </h1>
-
       <div className="scanner-container mb-6 flex flex-col items-center">
-        {!isScanning && (
-          <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg mb-6 w-60 hover:bg-blue-700 transition-all ease-in-out flex items-center justify-center"
-            onClick={() => setIsScanning(true)}
-          >
-            <div className="mr-2">
-              <FaCamera />
+        {!isScanning && !userDetails && (
+          <div className="text-center">
+            <div className="qr-card bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 p-8 rounded-lg mb-6">
+              <div className="flex flex-col items-center justify-center">
+                <div className="user-icon bg-gray-200 rounded-full h-24 w-24 flex items-center justify-center mb-4">
+                  <span className="text-xl font-bold">ING Studios</span>
+                </div>
+
+                <div
+                  className="qr-code bg-white p-4 rounded-lg"
+                  onClick={() => {
+                    setIsScanning(true);
+                  }}
+                >
+                  <div className="food-icon h-20 w-20 flex items-center justify-center mb-4">
+                    <span className="text-xl font-bold">
+                      <img src="https://img.icons8.com/ios/452/qr-code.png" />
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-            Start Scanning
-          </button>
+            {/* Scan Button */}
+            <button
+              className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg mb-6 w-60 hover:bg-gradient-to-l transition-all ease-in-out flex items-center justify-center"
+              onClick={() => setIsScanning(true)}
+            >
+              <div className="mr-2">
+                <FaCamera />
+              </div>
+              Scan Code
+            </button>
+          </div>
         )}
 
         {isScanning && (
@@ -157,50 +179,50 @@ const ScanOrder = () => {
           </div>
         )}
 
-        {scannedData && (
+        {/* {scannedData && (
           <p className="text-green-600 text-lg mt-4 font-bold">
             Scanned successfully! {scannedData}
           </p>
-        )}
+        )} */}
       </div>
 
       {userDetails && (
-        <div className="form-container bg-white shadow-lg rounded-lg p-6 mb-6">
+        <div className="form-container bg-white shadow-lg rounded-lg p-2 mb-2">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-            User Details
+            User Order
           </h2>
-          <div className="grid grid-cols-2 gap-4 text-gray-700 font-bold">
-            <p>
+          <div className="flex flex-wrap gap-2">
+            <div className="flex-1 min-w-[200px] border border-gray-300 p-2 rounded-md">
               <strong>Id:</strong> {userDetails.id}
-            </p>
-            <p>
+            </div>
+            <div className="flex-1 min-w-[200px] border border-gray-300 p-2 rounded-md">
               <strong>Name:</strong> {userDetails.name}
-            </p>
-            <p>
+            </div>
+            <div className="flex-1 min-w-[200px] border border-gray-300 p-2 rounded-md">
               <strong>Department:</strong> {userDetails.department}
-            </p>
-            <p>
+            </div>
+            <div className="flex-1 min-w-[200px] border border-gray-300 p-2 rounded-md">
               <strong>Designation:</strong> {userDetails.designation}
-            </p>
+            </div>
           </div>
-          <MealSelector
-            selectedMeal={selectedMealType}
-            onMealChange={handleMealTypeChange}
-            mealOptions={mealOptions}
-          />
-          <div className="time mt-6">
-            <label className="block text-gray-700 text-m font-extrabold mb-2">
-              Time:
-            </label>
-            <p className="text-gray-700 text-lg font-bold">
-              {new Date().toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
-            </p>
+          <div className="mt-1flex flex-wrap">
+            <MealSelector
+              selectedMeal={selectedMealType}
+              onMealChange={handleMealTypeChange}
+              mealOptions={mealOptions}
+            />
+            <div className="flex-1 min-w-[200px] border border-gray-300 p-2 rounded-md">
+              <strong>Time:</strong>{" "}
+              <strong>
+                {new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </strong>
+            </div>
           </div>
-          <div className="flex mt-6 gap-5 justify-end">
+          <div className="flex mt-8 gap-5 justify-end">
             <button
               className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-all ease-in-out flex items-center"
               onClick={handleCancelOrder}
@@ -228,8 +250,36 @@ const ScanOrder = () => {
           No valid user data found in the scan.
         </p>
       )}
+      {userDetails && (
+        <div className="flex justify-between m-2 mt-6">
+          <button
+            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg mb-6 w-30 hover:bg-gradient-to-l transition-all ease-in-out flex items-center justify-center"
+            onClick={() => {
+              resetForm();
+              setIsScanning(true);
+            }}
+          >
+            <div className="mr-2">
+              <FaRedoAlt />
+            </div>
+            Scan Again
+          </button>
+          <button
+            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg mb-6 w-30 hover:bg-gradient-to-l transition-all ease-in-out flex items-center justify-center"
+            onClick={() => {
+              resetForm();
+              setIsScanning(false);
+            }}
+          >
+            <div className="mr-2">
+              <FaHome />
+            </div>
+            Home
+          </button>
+        </div>
+      )}
 
-      <div className="flex justify-center mt-6">
+      {/* <div className="flex justify-center mt-6">
         <button
           className="bg-gray-700 text-white px-6 py-3 rounded-lg w-60 hover:bg-gray-800 transition-all ease-in-out flex items-center justify-center"
           onClick={() => {
@@ -242,7 +292,7 @@ const ScanOrder = () => {
           </div>
           Scan Again
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
