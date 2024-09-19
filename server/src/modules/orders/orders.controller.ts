@@ -21,12 +21,8 @@ export const createOrder = async (req: Request, res: Response) => {
  * @returns {Promise<Response>}
  */
 
-type OrderProps = Partial<PageProps>;
-
 export const fetchOrders = async (req: Request, res: Response) => {
-  const { page, size }: OrderProps = req.query;
-
-  const data = await orderService.fetchOrders({ page, size });
+  const data = await orderService.fetchOrders(req.query);
 
   return res.status(HttpStatus.OK).json({ data });
 };

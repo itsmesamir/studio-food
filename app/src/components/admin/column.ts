@@ -2,6 +2,9 @@ import moment from "moment";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 
 import { TextCell } from "./tableCells";
+import { classNames } from "utils/className";
+import { mealTypeColorsMap } from "constants/orders";
+import { MealType } from "enums/order";
 
 export const columns = (): Array<ColumnDef<Order>> => {
   return [
@@ -61,7 +64,10 @@ export const columns = (): Array<ColumnDef<Order>> => {
       cell: (props: CellContext<Order, unknown>) =>
         TextCell(
           props.row.original.mealType,
-          "capital-text employees__table-text"
+          classNames(
+            "capital-text employees__table-text text-white px-2 rounded-full flex item-center justify-center w-fit",
+            mealTypeColorsMap[props.row.original.mealType as MealType]
+          )
         ),
     },
     {

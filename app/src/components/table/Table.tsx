@@ -200,12 +200,7 @@ function Table<T>(props: MyTableProps<T>) {
             classes?.table
           )}
         >
-          <thead
-            className={classNames(
-              "border-b-2 border-grey-200 bg-grey-100/50",
-              classes?.tableHeader
-            )}
-          >
+          <thead className={classNames("bg-gray-100/70", classes?.tableHeader)}>
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <tr
@@ -240,7 +235,7 @@ function Table<T>(props: MyTableProps<T>) {
                           onKeyUp={() => {}}
                           tabIndex={0}
                           className={classNames(
-                            "flex items-center text-grey-1000 font-semibold text-sm",
+                            "flex items-center text-gray-1000 font-semibold text-sm",
                             {
                               "cursor-pointer whitespace-nowrap":
                                 sortable && header.column.getCanSort(),
@@ -325,7 +320,7 @@ function Table<T>(props: MyTableProps<T>) {
                   <>
                     <tr
                       className={classNames(
-                        "hover:bg-grey-100 cursor-pointer border-b border-solid border-grey-200",
+                        "hover:bg-gray-100 cursor-pointer border-b border-solid border-gray-100",
                         {
                           "bg-tertiary-blue-15": isRowSelected(id),
                         },
@@ -361,7 +356,7 @@ function Table<T>(props: MyTableProps<T>) {
                                 : 0
                             }
                             className={classNames(
-                              "px-4 py-3 text-sm text-grey-800",
+                              "px-4 py-3 text-sm text-gray-500",
                               {
                                 "pr-4": cell.column.id === ACTION_ID,
                               },

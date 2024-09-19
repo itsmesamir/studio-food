@@ -8,6 +8,8 @@ import {
   StylesConfig,
 } from "react-select";
 
+import { FiSliders } from "react-icons/fi";
+
 import Dropdown from "components/dropdown";
 import DatePicker from "components/datePicker";
 
@@ -20,6 +22,9 @@ import { FilterData, Filters } from "interface/filter";
 import en from "constants/en";
 import { black, neutrals900 } from "constants/color";
 import { YYYY_MM_DD } from "constants/date";
+import Modal from "components/modal/Modal";
+import { BiFilter } from "react-icons/bi";
+import { FaFilter } from "react-icons/fa";
 
 export interface BaseTableFilterProps<T> {
   isFilterModalOpen?: boolean;
@@ -111,14 +116,14 @@ function ActionContent(props: ActionContentProps) {
 
   return (
     <>
-      <div className={classNames("table__buttons mr-0x", classes?.container)}>
+      <div className={classNames("flex gap-x-4", classes?.container)}>
         <button
           type="button"
           className={classNames(
-            "btn",
+            "btn-primary",
             {
-              "btn--outlined-grey": !isFilterChanged,
-              "btn--primary": isFilterChanged,
+              "border-gray-300": !isFilterChanged,
+              "": isFilterChanged,
             },
             classes?.primary
           )}
@@ -129,7 +134,7 @@ function ActionContent(props: ActionContentProps) {
         </button>
         <button
           type="button"
-          className={classNames(classes?.secondary, "btn btn-text no-border")}
+          className={classNames(classes?.secondary, "btn-secondary")}
           onClick={() => handleResetFilter()}
           disabled={!canResetFilters}
         >
@@ -364,7 +369,7 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
 
       if (filter.type === FilterType.Date) {
         return (
-          <div className="filter__item cursor-pointer dropdown-button">
+          <div className="filter__item cursor-pointer dropdown-button ">
             <DatePicker
               key={filter.key}
               name={filter.key}
@@ -410,10 +415,13 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
               menuList: (base) => ({
                 ...base,
                 width: "204px",
+                flex: 1,
               }),
               control: (base, { isFocused }) => ({
                 ...base,
                 width: "204px",
+                flex: 1,
+                height: "40px",
                 border: isFocused ? "none" : "none",
                 outline: isFocused ? "none" : "none",
                 boxShadow: isFocused ? "none" : "none",
@@ -426,9 +434,20 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
               menu: (base) => ({
                 ...base,
                 marginTop: "0px",
+                display: "flex",
                 border: "none",
-                boxShadow: "0px 22px 33px 4px #00000010",
+                // boxShadow: "0px 22px 33px 4px #00000010",
                 borderTop: "1px solid #e6e6e6",
+              }),
+              indicatorSeparator: (provided) => ({
+                ...provided,
+                display: "none",
+                // Adjust indicator separator height
+              }),
+
+              singleValue: (provided) => ({
+                ...provided,
+                lineHeight: "40px", // Align single value vertically
               }),
               valueContainer: (base) => ({
                 ...base,
@@ -440,6 +459,8 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
                 color: black,
                 maxHeight: "90px",
                 overflowY: "auto",
+
+                height: "40px", // Adjust value container height
               }),
               indicatorsContainer(base) {
                 return {
@@ -451,7 +472,11 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
               container(base) {
                 return {
                   ...base,
-                  boxShadow: "0px 3px 33px 0px #00000024;",
+                  display: "flex",
+                  border: "1px solid #e6e6e6",
+                  borderRadius: "4px",
+                  minHeight: "40px",
+                  // boxShadow: "0px 3px 33px 0px #00000024;",
                 };
               },
               multiValueRemove(base, state) {
@@ -471,6 +496,7 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
               option(base) {
                 return {
                   ...base,
+                  height: "40px",
                   color: neutrals900,
                   fontSize: "16px",
                 };
@@ -490,31 +516,37 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
   );
 
   return (
-    <div className={classNames("table-filters", className)}>
-      <div className={classNames("table__header d-flex", classes?.header)}>
-        <div
-          className={classNames(
-            "table__filters table-filters__content right",
-            classes?.content
-          )}
-        >
-          <div
-            className={classNames(
-              "flex items-center flex-wrap gap-4",
-              classes?.filterList
-            )}
-          >
-            {fixedFilters.map((filter, idx) => (
-              <div className={classNames(classes?.filterItem)}>
-                <FilterElement
-                  filter={filter}
-                  activeFilters={selectedFilters}
-                  key={idx}
-                  isFiltersLoading={isLoading}
-                />
-              </div>
-            ))}
-          </div>
+    <>
+      <Modal
+        // headerIcon={<UiSlidersVAlt size={20} className="color-gray-50" />}
+        title="Filters"
+        isOpen={openModal}
+        className="table-filters__modal"
+        onRequestClose={() => setOpenModal(false)}
+      >
+        <div className="flex flex-col gap-y-4">
+          {fixedFilters.map((filter, idx) => (
+            <FilterElement
+              filter={filter}
+              activeFilters={selectedFilters}
+              key={idx}
+              isFiltersLoading={isLoading}
+            />
+          ))}
+
+          {/* <ActionContent
+            isFilterChanged={isFilterChanged}
+            onFilterApply={onFilterApply}
+            selectedFilters={selectedFilters}
+            setAddedFilters={setAddedFilters}
+            onFilterReset={onFilterReset}
+            canResetFilters={canResetFilters}
+            trailing={trailing}
+            action={{
+              primaryTitle: action?.primaryTitle,
+              secondaryTitle: action?.secondaryTitle,
+            }}
+          /> */}
 
           <ActionContent
             isFilterChanged={isFilterChanged}
@@ -535,8 +567,60 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
             }}
           />
         </div>
-        {actionButton}
+      </Modal>
+
+      <div className={classNames("table-filters", className)}>
+        <div className="lg:hidden">
+          <FiSliders size={24} onClick={onOpenModal} />
+        </div>
+
+        <div
+          className={classNames(
+            "max-lg:hidden table__header d-flex",
+            classes?.header
+          )}
+        >
+          <div className={classNames("flex flex-wrap gap-4", classes?.content)}>
+            <div
+              className={classNames(
+                "flex items-center flex-wrap gap-4",
+                classes?.filterList
+              )}
+            >
+              {fixedFilters.map((filter, idx) => (
+                <div className={classNames(classes?.filterItem)}>
+                  <FilterElement
+                    filter={filter}
+                    activeFilters={selectedFilters}
+                    key={idx}
+                    isFiltersLoading={isLoading}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <ActionContent
+              isFilterChanged={isFilterChanged}
+              onFilterApply={onFilterApply}
+              selectedFilters={selectedFilters as FilterData}
+              setAddedFilters={setAddedFilters}
+              onFilterReset={onFilterReset}
+              canResetFilters={canResetFilters}
+              trailing={trailing}
+              classes={{
+                container: classes?.actionContainer,
+                primary: classes?.actionPrimary,
+                secondary: classes?.actionSecondary,
+              }}
+              action={{
+                primaryTitle: action?.primaryTitle,
+                secondaryTitle: action?.secondaryTitle,
+              }}
+            />
+          </div>
+          {actionButton}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

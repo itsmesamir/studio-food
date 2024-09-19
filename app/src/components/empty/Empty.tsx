@@ -1,6 +1,8 @@
 import React from "react";
 import classNames from "clsx";
 
+import { CiDatabase } from "react-icons/ci";
+
 // import { empty } from "assets/images";
 
 export interface EmptyProps {
@@ -21,6 +23,7 @@ function Empty(props: EmptyProps) {
         className
       )}
     >
+      <CiDatabase size={30} />
       {/* {icon ? (
         <div className="center">{icon}</div>
       ) : (
@@ -31,7 +34,7 @@ function Empty(props: EmptyProps) {
 
       <p
         className={classNames(emptyTextClassName, {
-          "text-base text-grey-60": !emptyTextClassName,
+          "text-lg font-semibold text-gray-60 ": !emptyTextClassName,
         })}
       >
         {message as string}

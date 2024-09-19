@@ -48,7 +48,7 @@ function DatePicker(props: DatePickerProps) {
         selected={value}
         onChange={onChange}
         placeholderText={placeholderText}
-        dateFormat={dateFormat}
+        dateFormat={"yyyy-MM-dd"}
         isClearable={isClearable}
         showYearDropdown={showYearDropdown}
         showMonthDropdown={showMonthDropdown}

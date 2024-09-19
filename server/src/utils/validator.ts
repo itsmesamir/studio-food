@@ -5,7 +5,7 @@ import { ValidationError } from '@/errors/errors';
 
 export function validateReqQuery(schema: Schema) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { error, value } = schema.validate(req.body);
+    const { error, value } = schema.validate(req.query);
 
     if (error) {
       return next(new ValidationError(error.message));
