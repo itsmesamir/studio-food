@@ -77,8 +77,6 @@ class UserModel extends BaseModel {
 
     this.injectFilter(query, filters);
 
-    console.log('query', query.toString());
-
     return query.then(res => res.map(this.mapToModel));
   }
 

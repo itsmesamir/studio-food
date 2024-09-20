@@ -7,6 +7,12 @@ import GenerateQrCell from "./GenerateQrCell";
 export const columns = (): Array<ColumnDef<User>> => {
   return [
     {
+      header: "SN",
+      accessorKey: "sn",
+      cell: ({ row: { index } }) =>
+        TextCell(index + 1, "capital-text employees__table-text"),
+    },
+    {
       header: "User ID",
       accessorKey: "userId",
       cell: ({ row: { original } }: UserRowData) =>

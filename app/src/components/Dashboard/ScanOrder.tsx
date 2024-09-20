@@ -13,6 +13,7 @@ import { getMealType } from "utils/order";
 import { MealType } from "enums/order";
 import MealSelector from "./MealSelector";
 import http from "services/http";
+import { fetchUserById } from "services/users";
 
 interface UserDetails {
   id: string;
@@ -40,15 +41,16 @@ const ScanOrder = () => {
 
   const fetchUserDetails = async (scannedInfo: any) => {
     try {
-      console.log(scannedInfo);
       const formattedText = scannedInfo.replace(/(\w+):/g, '"$1":');
       const data = JSON.parse(formattedText);
+      // get user details
+      const user = await fetchUserById(data.id, {});
       if (data && data.id) {
         setUserDetails({
           id: data.id,
           name: data.name,
-          department: data.department,
-          designation: data.designation,
+          department: user.department,
+          designation: user.designation,
         });
       }
     } catch (error) {
@@ -180,11 +182,11 @@ const ScanOrder = () => {
           </div>
         )}
 
-        {scannedData && (
+        {/* {scannedData && (
           <p className="text-green-600 text-lg mt-4 font-bold">
             Scanned successfully! {scannedData}
           </p>
-        )}
+        )} */}
       </div>
 
       {userDetails && (
