@@ -44,10 +44,16 @@ const App = () => {
         <div className="mx-auto">
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/admin" element={<AdminTable />} />
-            <Route path="/users" element={<UsersTable />} />
+            {/* <Route path="/admin" element={<AdminTable />} />
+            <Route path="/users" element={<UsersTable />} /> */}
             <Route path="/scan" element={<PrivateRoute />}>
               <Route path="" element={<ScanOrder />} />
+            </Route>
+            <Route path="/users" element={<PrivateRoute />}>
+              <Route path="" element={<UsersTable />} />
+            </Route>
+            <Route path="/admin" element={<PrivateRoute />}>
+              <Route path="" element={<AdminTable />} />
             </Route>
 
             {/* <Route path="/admin" element={<PrivateRoute role="admin" />}>

@@ -40,6 +40,7 @@ const ScanOrder = () => {
 
   const fetchUserDetails = async (scannedInfo: any) => {
     try {
+      console.log(scannedInfo);
       const formattedText = scannedInfo.replace(/(\w+):/g, '"$1":');
       const data = JSON.parse(formattedText);
       if (data && data.id) {
@@ -179,11 +180,11 @@ const ScanOrder = () => {
           </div>
         )}
 
-        {/* {scannedData && (
+        {scannedData && (
           <p className="text-green-600 text-lg mt-4 font-bold">
             Scanned successfully! {scannedData}
           </p>
-        )} */}
+        )}
       </div>
 
       {userDetails && (

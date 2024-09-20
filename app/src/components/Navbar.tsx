@@ -33,6 +33,12 @@ const Navbar = () => {
             </Link>
           )}
 
+          {currentUser && (
+            <Link to="/users" className="text-white mx-4">
+              Users
+            </Link>
+          )}
+
           {currentUser && isAdmin && (
             <Link to="/admin" className="text-white mx-4">
               Admin
