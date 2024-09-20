@@ -3,6 +3,6 @@ export default {
     classPrefix: "scn",
   },
 
-  apiBaseURI: process.env.REACT_APP_API_BASE_URI,
+  apiBaseURI: process.env.REACT_APP_API_URL,
   appBasePath: "/",
 } as const;
