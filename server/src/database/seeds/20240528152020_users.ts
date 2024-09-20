@@ -1278,6 +1278,15 @@ exports.seed = function (knex: Knex) {
         },
         {
           id: 503,
+          name: 'User Manager',
+          email: 'usermanager@gmail.com',
+          password: '324d52ea400e79ae65163f0b369e295c4993d26204c66317ee8e53f31ae003e3', // manager@123
+          designation: 'Writer',
+          department: 'Script',
+          role: 'staff',
+        },
+        {
+          id: 400,
           name: 'admin',
           email: 'admin@gmail.com',
           password: 'd8ec9b20f8519604e1b6d4bdfcd43db2730a9408c6ae2cd6f8cef70f1b10250a', // bibek1234

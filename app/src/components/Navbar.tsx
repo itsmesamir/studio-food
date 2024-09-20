@@ -7,6 +7,9 @@ const Navbar = () => {
   const { data: currentUser, logout } = useUserStore();
 
   const isAdmin = currentUser?.roles === "admin";
+  const isStaff = currentUser?.roles === "staff";
+
+  const canManageUsers = isAdmin || isStaff;
 
   const navigate = useNavigate();
 
@@ -33,7 +36,7 @@ const Navbar = () => {
             </Link>
           )}
 
-          {currentUser && (
+          {currentUser && canManageUsers && (
             <Link to="/users" className="text-white mx-4">
               Users
             </Link>
