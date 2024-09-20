@@ -6,12 +6,13 @@ import { Any, DefaultObject } from "types/common";
 
 import api from "constants/api";
 import http from "./http";
+import { User } from "interface/user";
 
 export async function fetchUsers(
-  params: Any,
+  params?: Any,
   signal?: AbortSignal
-): Promise<DefaultObject[]> {
-  const url = buildUrl(api.users);
+): Promise<User[]> {
+  const url = buildUrl(api.baseUrl, api.users);
 
   const { data } = await http.get(url, { signal, params });
 
