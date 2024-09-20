@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import usersRoute from '@/modules/user/user.route';
+import qrcodeRoute from '@/modules/qrcode/qrcode.route';
 import ordersRoute from '@/modules/orders/orders.route';
 import swaggerRoute from '@/modules/swagger/swagger.route';
 
@@ -37,6 +38,8 @@ router.use((req, _, next) => {
 router.use(authMiddleware);
 
 router.use('/users', usersRoute);
+
+router.use('/qrcode', qrcodeRoute);
 
 router.use('/orders', ordersRoute);
 

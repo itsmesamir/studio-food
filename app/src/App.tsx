@@ -16,6 +16,7 @@ import Error from "./components/Error";
 import useUserStore from "stores/useUserStore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Unauthorized from "components/Unauthorized";
+import UsersTable from "components/user/UsersTable";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,15 +44,21 @@ const App = () => {
         <div className="mx-auto">
           <Routes>
             <Route path="/login" element={<Login />} />
-            {/* <Route path="/scan" element={<ScanOrder />} />
-            <Route path="/admin" element={<AdminTable />} /> */}
+            {/* <Route path="/admin" element={<AdminTable />} />
+            <Route path="/users" element={<UsersTable />} /> */}
             <Route path="/scan" element={<PrivateRoute />}>
               <Route path="" element={<ScanOrder />} />
             </Route>
-
-            <Route path="/admin" element={<PrivateRoute role="admin" />}>
+            <Route path="/users" element={<PrivateRoute />}>
+              <Route path="" element={<UsersTable />} />
+            </Route>
+            <Route path="/admin" element={<PrivateRoute />}>
               <Route path="" element={<AdminTable />} />
             </Route>
+
+            {/* <Route path="/admin" element={<PrivateRoute role="admin" />}>
+              <Route path="" element={<AdminTable />} />
+            </Route> */}
 
             <Route path="/unauthorized" element={<Unauthorized />} />
 
