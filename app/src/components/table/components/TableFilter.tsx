@@ -373,7 +373,7 @@ export default function TableFilters<T>(props: TableFilterProps<T>) {
             <DatePicker
               key={filter.key}
               name={filter.key}
-              label={filter.name}
+              label="Select Date"
               value={(activeFilters && activeFilters[filter.key]) || getDate()}
               onChange={(e) =>
                 setSelectedFilters((previousFilters) => ({

@@ -33,6 +33,7 @@ interface User {
 
 const AdminTable = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [users, setUsers] = useState<User[]>([]);
 
@@ -61,16 +62,24 @@ const AdminTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const param = parseQuery(window.location.search);
+      try {
+        setLoading(true);
+        const param = parseQuery(window.location.search);
 
-      const res = await http.get("/orders", {
-        params: param,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      setData(res.data);
+        const res = await http.get("/orders", {
+          params: param,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        setData(res.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchData();
   }, [window.location.search]);
 
@@ -126,7 +135,12 @@ const AdminTable = () => {
   return (
     <div className="container bg-white mt-6">
       <div className="flex justify-between items-center ">
-        <TableTitle tableTitle={"Orders"} itemName={""} start={0} total={0} />
+        <TableTitle
+          tableTitle={"Orders"}
+          itemName={""}
+          start={data.length}
+          total={data.length}
+        />
         <TableFilters<OrderFilterID>
           appliedFilters={appliedFilters}
           onFilterApply={applyFilters}
@@ -138,7 +152,7 @@ const AdminTable = () => {
         />
       </div>
       <Table<Order>
-        loading={false}
+        loading={loading}
         columns={columns()}
         data={data}
         getRowCanExpand={() => true}
