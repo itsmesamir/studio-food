@@ -9,13 +9,11 @@ import QRCode from 'qrcode';
  * @returns {Promise<Response>}
  */
 export const generateQR = async (req: Request, res: Response) => {
-  const { id, name, designation, department } = req.body;
+  const { id, name } = req.body;
 
   const qrData = {
     id: id,
     name: name,
-    designation: designation,
-    department: department,
   };
 
   try {

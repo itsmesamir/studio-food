@@ -73,8 +73,6 @@ class OrderModel extends BaseModel {
 
     this.injectPagination(query, pagination);
 
-    console.log('query', query.toString());
-
     return query.then(q => q.map(this.mapToModel));
   }
 
