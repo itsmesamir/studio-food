@@ -31,6 +31,17 @@ export async function fetchUserById(
   return data;
 }
 
+export async function createUser(
+  body: Any,
+  signal?: AbortSignal
+): Promise<User[]> {
+  const url = buildUrl(api.users);
+
+  const { data } = await http.post(url, body, { signal });
+
+  return data;
+}
+
 // export async function updateUserById(
 //   id: number,
 //   body: Any,
