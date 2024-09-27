@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import useUserStore from "stores/useUserStore";
 
+import studio_logo from "../assets/studio-logo.jpeg";
+
 const Navbar = () => {
   const { data: currentUser, logout } = useUserStore();
 
@@ -26,8 +28,11 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-pink-500 to-blue-500 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-white text-lg font-bold">
-          {/* TODO: Fix the logo */}
-          {/* <img src={logo} alt="logod" className="w-[80px] h-[80px]" /> */}
+          <img
+            src={studio_logo}
+            alt="logod"
+            className="w-[60px] h-[60px] rounded-full"
+          />
         </Link>
         <div>
           {currentUser && (
