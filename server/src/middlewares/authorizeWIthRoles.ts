@@ -44,6 +44,10 @@ export const authorizeWithRoles = ({
         return next();
       }
 
+      if (currentUser?.roles && typeof currentUser.roles === 'string') {
+        currentUser.roles = [{ name: currentUser.roles }];
+      }
+
       const userRoles = currentUser?.roles.map(role => role.name) || [];
 
       const isAuthorized = roles.some(role => userRoles.includes(role));

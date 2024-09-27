@@ -8,7 +8,7 @@ export interface MinimalUser {
 export interface User {
   id: number;
   name: string;
-  email: string;
+  email?: string;
   country: string;
   countryId?: number;
   department: string;
@@ -16,6 +16,7 @@ export interface User {
   designation?: Designation;
   managerId?: number;
   manager?: MinimalUser;
+  password?: string;
   phone: string;
   roleIds?: number[];
   roles: Role[];
