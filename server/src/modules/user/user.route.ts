@@ -20,6 +20,14 @@ router.post('/signout', userController.signOut);
 
 router.get('/', userController.fetchUsers);
 
+router.post(
+  '/',
+  validateReqBody(userValidator.createUserSchema),
+  requireAuth,
+  authorizeWithRoles({ roles: [Roles.ADMIN, Roles.MANAGER] }),
+  userController.createUser
+);
+
 router.get('/currentuser', userController.fetchCurrentUser);
 
 router.get('/:id', requireAuth, userController.fetchUserById);

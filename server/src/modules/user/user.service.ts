@@ -32,6 +32,32 @@ export const fetchUsers = async (filters: UserFilters, trx?: Knex.Transaction): 
 };
 
 /**
+ * Create a new user.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<Response>}
+ */
+export const createUser = async (body: User): Promise<User> => {
+  const { email, password } = body;
+
+  const hashedPassword = password ? await generateHash(password) : '';
+
+  if (email) {
+    const [existingUser] = await UserModel.fetch({ email });
+
+    if (existingUser) {
+      throw new BadRequestError('User with email already exists.');
+    }
+  }
+
+  const insertedUserId = await UserModel.createUser({ ...body, password: hashedPassword });
+  const user = await UserModel.fetchById(insertedUserId);
+
+  return user;
+};
+
+/**
  * Fetch list of users.
  *
  * @returns A promise that resolves to an array of User objects.

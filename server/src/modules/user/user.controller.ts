@@ -18,6 +18,19 @@ export const fetchUsers = async (req: Request, res: Response) => {
 };
 
 /**
+ * Create a new user.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<Response>}
+ */
+export const createUser = async (req: Request, res: Response) => {
+  const user = await userService.createUser(req.body);
+
+  return res.status(HttpStatus.CREATED).json({ message: 'User created successfully.', data: user });
+};
+
+/**
  * Get all users.
  *
  * @param {Request} req
