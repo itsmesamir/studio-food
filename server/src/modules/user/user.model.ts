@@ -5,6 +5,8 @@ import BaseModel from '@/models/baseModel';
 import { User, UserBody, UserFilters } from '@/types/user';
 import { Any } from '@/types/common';
 
+import db from '@/db';
+
 class UserModel extends BaseModel {
   static table = 'users';
 
@@ -17,6 +19,19 @@ class UserModel extends BaseModel {
    */
   static insert(data: { password: string } & UserBody, trx?: Knex.Transaction) {
     return this.queryBuilder(trx).table(this.table).insert(data);
+  }
+
+  /**
+   * Create a new user.
+   *
+   * @param {User} body
+   * @returns {Promise<User>}
+   * @memberof UserModel
+   */
+  static async createUser(body: User): Promise<number> {
+    const data = await db(this.table).insert(body);
+
+    return data[0];
   }
 
   /**

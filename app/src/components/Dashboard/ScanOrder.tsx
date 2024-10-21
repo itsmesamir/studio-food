@@ -15,6 +15,9 @@ import MealSelector from "./MealSelector";
 import http from "services/http";
 import { fetchUserById } from "services/users";
 
+import qr_logo from "../../assets/qr-logo.png";
+import movie_logo from "../../assets/movie-logo.jpeg";
+
 interface UserDetails {
   id: string;
   name: string;
@@ -104,7 +107,11 @@ const ScanOrder = () => {
             <div className="qr-card bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 p-8 rounded-lg mb-6">
               <div className="flex flex-col items-center justify-center">
                 <div className="user-icon bg-gray-200 rounded-full h-24 w-24 flex items-center justify-center mb-4">
-                  <span className="text-xl font-bold">ING Studios</span>
+                  <img
+                    src={movie_logo}
+                    alt="logo"
+                    className="rounded-full h-24 w-24"
+                  />
                 </div>
 
                 <div
@@ -113,9 +120,9 @@ const ScanOrder = () => {
                     setIsScanning(true);
                   }}
                 >
-                  <div className="food-icon h-20 w-20 flex items-center justify-center mb-4">
+                  <div className="food-icon flex items-center justify-center mb-4">
                     <span className="text-xl font-bold">
-                      <img src="https://img.icons8.com/ios/452/qr-code.png" />
+                      <img src={qr_logo} alt="logo" className="h-20 w-20" />
                     </span>
                   </div>
                 </div>

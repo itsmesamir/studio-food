@@ -25,3 +25,12 @@ export const updateUserSchema = Joi.object({
   roleIds: Joi.array().items(Joi.number().required()).required(),
   excludeIds: Joi.string().optional(),
 });
+
+export const createUserSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().optional().allow(null),
+  password: Joi.string().optional().allow(null),
+  designation: Joi.string().required(),
+  department: Joi.string().required(),
+  role: Joi.string().optional(),
+});

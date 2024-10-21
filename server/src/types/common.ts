@@ -7,7 +7,7 @@ export interface Designation {
 }
 
 export interface Role {
-  id: number;
+  id?: number;
   name: string;
 }
 
@@ -22,7 +22,8 @@ export interface DefaultObject {
 }
 
 export enum Roles {
-  ADMIN = 'Admin',
-  USER = 'User',
-  MANAGER = 'Manager',
+  ADMIN = 'admin',
+  USER = 'user',
+  MANAGER = 'manager',
+  STAFF = 'staff',
 }
