@@ -1,5 +1,9 @@
 interface Order {
+  id?: number;
   name: string;
+  department?: string;
+  designation?: string;
+
   mealType: string;
   orderTime: string;
   user: {
