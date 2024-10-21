@@ -9,6 +9,7 @@ import { MealType } from "enums/order";
 import http from "services/http";
 import TableTitle from "components/table/components/TableTitle";
 import { parseQuery } from "utils/queryParams";
+import { getFormattedDate } from "utils/date";
 
 enum OrderFilterID {
   userIds = "userIds",
@@ -132,6 +133,38 @@ const AdminTable = () => {
   const { appliedFilters, applyFilters, resetFilters, canResetFilters } =
     useFilters(DEFAULT_FILTERS);
 
+  const downloadCSV = () => {
+    const csvRows = [];
+    const headers = [
+      "ID",
+      "Name",
+      "Department",
+      "Designation",
+      "Meal Type",
+      "Order Time",
+    ];
+    csvRows.push(headers.join(","));
+
+    data.forEach((order: Order) => {
+      const row = [
+        order.id,
+        order.user.name,
+        order.user.department,
+        order.user.designation,
+        order.mealType,
+        getFormattedDate(order.orderTime, "YYYY-MM-DD hh:mm"),
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("download", "orders.csv");
+    a.click();
+  };
+
   return (
     <div className="container bg-white mt-6">
       <div className="flex justify-between items-center ">
@@ -150,6 +183,12 @@ const AdminTable = () => {
           isLoading={false}
           className="px-5"
         />
+        <button
+          onClick={downloadCSV}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          Download as CSV
+        </button>
       </div>
       <Table<Order>
         loading={loading}
