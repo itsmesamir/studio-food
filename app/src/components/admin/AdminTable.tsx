@@ -154,7 +154,8 @@ const AdminTable = () => {
   const downloadCSV = () => {
     const csvRows = [];
     const headers = [
-      "ID",
+      "Order ID",
+      "User ID",
       "Name",
       "Department",
       "Designation",
@@ -166,6 +167,7 @@ const AdminTable = () => {
     data.forEach((order: Order) => {
       const row = [
         order.id,
+        order.user.id,
         order.user.name,
         order.user.department,
         order.user.designation,

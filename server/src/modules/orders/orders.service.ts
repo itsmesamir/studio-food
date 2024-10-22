@@ -2,6 +2,8 @@ import logger from '@/services/logger';
 
 import { getMeta, getPaginationOptions } from '@/utils/pagination';
 
+import { BadRequestError } from '@/errors/errors';
+
 import { PageProps } from '@/types/pagination';
 import { Any } from '@/types/common';
 import { OrderFilter, OrderProps } from '@/types/orders';
@@ -42,6 +44,16 @@ export const fetchOrders = async (query: Any) => {
  */
 export const createOrder = async (data: Any) => {
   log.info('Creating Order');
+
+  const { userId, mealType } = data;
+
+  const existingOrder = await fetchOrders({ userId, mealType, date: new Date() });
+
+  if (existingOrder.data.length > 0) {
+    throw new BadRequestError(
+      `Order already exists for user ${userId} and meal type ${mealType} on ${new Date().toDateString()}`
+    );
+  }
 
   const order = await OrderModel.createOrder(data);
 

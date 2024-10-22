@@ -7,9 +7,9 @@ import { MealType } from "enums/order";
  * @returns {MealType} MealType.
  */
 export function getMealType(hour: number): MealType {
-  if (hour >= 6 && hour < 10) return MealType.BREAKFAST;
+  if (hour >= 6 && hour < 10.5) return MealType.BREAKFAST;
 
-  if (hour >= 10 && hour < 15) return MealType.LUNCH;
+  if (hour >= 10.5 && hour < 15) return MealType.LUNCH;
 
   if (hour >= 15 && hour < 22) return MealType.DINNER;
 
