@@ -71,15 +71,15 @@ const UsersTable = () => {
         getRowCanExpand={() => true}
         emptyMessage="No users found"
         parentClassName="px-4"
-        pagination={{
-          pageCount: 1,
-          pageData: {
-            page: 1,
-            pageSize: 1,
-            total: 1,
-            count: 1,
-          },
-        }}
+        // pagination={{
+        //   pageCount: 1,
+        //   pageData: {
+        //     page: 1,
+        //     pageSize: 1,
+        //     total: 1,
+        //     count: 1,
+        //   },
+        // }}
       />
 
       <UserFormModal
