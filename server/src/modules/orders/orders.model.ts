@@ -10,6 +10,7 @@ import { PaginationProps } from '@/types/pagination';
 
 import db from '@/db';
 import { YYYY_MM_DD, yyyy_MM_dd } from '@/constants/date';
+import { Sort } from '@/constants/sortings';
 
 class OrderModel extends BaseModel {
   static readonly table = 'user_orders';
@@ -59,7 +60,13 @@ class OrderModel extends BaseModel {
     };
   }
 
-  static async fetchOrders(pagination: PaginationProps, filter: any) {
+  static injectSortBy(query: Knex.QueryBuilder, filter: Any) {
+    const order = filter.order || Sort.Asc;
+
+    query.orderBy('uo.created_at', order);
+  }
+
+  static async fetchOrders(pagination: PaginationProps, filter: Any) {
     const query = this.baseQuery()
       .select({
         id: 'u.id',
@@ -71,9 +78,23 @@ class OrderModel extends BaseModel {
 
     this.injectOrderFilter(query, filter);
 
+    this.injectSortBy(query, filter);
+
     this.injectPagination(query, pagination);
 
     return query.then(q => q.map(this.mapToModel));
+  }
+
+  static async fetchOrdersCount(pagination: PaginationProps, filter: Any) {
+    const query = this.baseQuery();
+    query.clearSelect();
+    query.count('* AS count').leftJoin({ u: this.users }, 'u.id', 'uo.user_id');
+
+    this.injectOrderFilter(query, filter);
+
+    return query.then(([result]: [{ count: number }]) => {
+      return result?.count;
+    });
   }
 
   static async createOrder({ userId, mealType }: { userId: number; mealType: string }) {

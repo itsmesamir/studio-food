@@ -24,5 +24,5 @@ export const createOrder = async (req: Request, res: Response) => {
 export const fetchOrders = async (req: Request, res: Response) => {
   const data = await orderService.fetchOrders(req.query);
 
-  return res.status(HttpStatus.OK).json({ data });
+  return res.status(HttpStatus.OK).json(data);
 };
