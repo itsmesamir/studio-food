@@ -163,7 +163,11 @@ class OrderModel extends BaseModel {
       filters.date
     );
     if (filters?.mealType) {
-      query.where('uo.meal_type', filters.mealType);
+      if (Array.isArray(filters.mealType)) {
+        query.whereIn('uo.meal_type', filters.mealType);
+      } else {
+        query.where('uo.meal_type', filters.mealType);
+      }
     }
 
     if (filters?.userIds) {
