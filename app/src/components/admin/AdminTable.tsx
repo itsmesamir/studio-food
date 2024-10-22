@@ -24,7 +24,7 @@ const DEFAULT_FILTERS: DefaultFilter<OrderFilterID> = {
   userIds: null,
   mealType: null,
   date: null,
-  size: 10,
+  size: 100,
 };
 
 interface User {

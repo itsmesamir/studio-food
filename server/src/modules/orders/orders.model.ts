@@ -157,11 +157,6 @@ class OrderModel extends BaseModel {
    * @param {FilterNotesParams} filters
    */
   static injectOrderFilter(query: Knex.QueryBuilder, filters: Any) {
-    console.log(
-      'getFormattedDate(filters.date)',
-      getFormattedDate(filters.date, YYYY_MM_DD),
-      filters.date
-    );
     if (filters?.mealType) {
       if (Array.isArray(filters.mealType)) {
         query.whereIn('uo.meal_type', filters.mealType);
@@ -171,7 +166,11 @@ class OrderModel extends BaseModel {
     }
 
     if (filters?.userIds) {
-      query.whereIn('u.id', filters.userIds);
+      if (Array.isArray(filters.userIds)) {
+        query.whereIn('u.id', filters.userIds);
+      } else {
+        query.where('u.id', filters.userIds);
+      }
     }
 
     if (filters?.date) {
