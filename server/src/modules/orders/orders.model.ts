@@ -69,7 +69,6 @@ class OrderModel extends BaseModel {
   static async fetchOrders(pagination: PaginationProps, filter: Any) {
     const query = this.baseQuery()
       .select({
-        id: 'u.id',
         name: 'u.name',
         designation: 'u.designation',
         department: ' u.department',
@@ -164,7 +163,11 @@ class OrderModel extends BaseModel {
       filters.date
     );
     if (filters?.mealType) {
-      query.where('uo.meal_type', filters.mealType);
+      if (Array.isArray(filters.mealType)) {
+        query.whereIn('uo.meal_type', filters.mealType);
+      } else {
+        query.where('uo.meal_type', filters.mealType);
+      }
     }
 
     if (filters?.userIds) {
