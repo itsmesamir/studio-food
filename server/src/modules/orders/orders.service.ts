@@ -1,6 +1,6 @@
 import logger from '@/services/logger';
 
-import { getPaginationOptions } from '@/utils/pagination';
+import { getMeta, getPaginationOptions } from '@/utils/pagination';
 
 import { PageProps } from '@/types/pagination';
 import { Any } from '@/types/common';
@@ -20,15 +20,19 @@ const log = logger.withNamespace('modules/user.service');
 export const fetchOrders = async (query: Any) => {
   log.info(`Fetching Orders ${JSON.stringify(query)}`);
 
-  console.log('query', query);
-
   const { page, size } = query;
 
   const paginationOptions = getPaginationOptions({ page, size });
 
-  const data = await OrderModel.fetchOrders(paginationOptions, query);
+  const projectsDataPromise = OrderModel.fetchOrders(paginationOptions, query);
 
-  return data;
+  const projectsDataCountPromise = OrderModel.fetchOrdersCount(paginationOptions, query);
+
+  const [data, count] = await Promise.all([projectsDataPromise, projectsDataCountPromise]);
+
+  const meta = getMeta({ page, size }, count);
+
+  return { data, meta };
 };
 
 /**

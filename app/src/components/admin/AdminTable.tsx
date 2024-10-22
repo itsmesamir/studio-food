@@ -10,17 +10,21 @@ import http from "services/http";
 import TableTitle from "components/table/components/TableTitle";
 import { parseQuery } from "utils/queryParams";
 import { getFormattedDate } from "utils/date";
+import { Meta } from "types/pagination";
+import { DEFAULT_PAGE_SIZE } from "constants/page";
 
 enum OrderFilterID {
   userIds = "userIds",
   mealTypeIds = "mealType",
   date = "date",
+  size = "size",
 }
 
 const DEFAULT_FILTERS: DefaultFilter<OrderFilterID> = {
   userIds: null,
   mealType: null,
   date: null,
+  size: 10,
 };
 
 interface User {
@@ -35,6 +39,13 @@ interface User {
 const AdminTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [pageData, setPageData] = useState<Meta>({
+    total: 0,
+    page: 0,
+    pageSize: 0,
+  });
+  const [pageCount, setPageCount] = useState<number>(0);
 
   const [users, setUsers] = useState<User[]>([]);
 
@@ -65,15 +76,22 @@ const AdminTable = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const param = parseQuery(window.location.search);
+        const param: any = parseQuery(window.location.search);
 
-        const res = await http.get("/orders", {
+        const res: any = await http.get("/orders", {
           params: param,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
         setData(res.data);
+
+        setPageData(res.meta);
+        const totalPage = Math.ceil(
+          res?.meta.total / (+param?.size || DEFAULT_PAGE_SIZE)
+        );
+
+        setPageCount(totalPage);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -91,7 +109,7 @@ const AdminTable = () => {
         key: OrderFilterID.userIds,
         isFixed: true,
         type: FilterType.Dropdown,
-        isMulti: true,
+        isMulti: false,
         options: userOptions,
       },
       {
@@ -99,7 +117,7 @@ const AdminTable = () => {
         key: OrderFilterID.mealTypeIds,
         isFixed: true,
         type: FilterType.Dropdown,
-        isMulti: true,
+        isMulti: false,
         options: [
           {
             label: MealType.BREAKFAST,
@@ -172,7 +190,7 @@ const AdminTable = () => {
           tableTitle={"Orders"}
           itemName={""}
           start={data.length}
-          total={data.length}
+          total={pageData.total}
         />
         <TableFilters<OrderFilterID>
           appliedFilters={appliedFilters}
@@ -190,22 +208,15 @@ const AdminTable = () => {
           Download as CSV
         </button>
       </div>
+
       <Table<Order>
         loading={loading}
         columns={columns()}
-        data={data}
+        data={data as any[]}
         getRowCanExpand={() => true}
         emptyMessage="No orders found"
         parentClassName=""
-        // pagination={{
-        //   pageCount: 1,
-        //   pageData: {
-        //     page: 1,
-        //     pageSize: 1,
-        //     total: 1,
-        //     count: 1,
-        //   },
-        // }}
+        pagination={{ pageCount, pageData }}
       />
     </div>
   );

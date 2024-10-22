@@ -1,4 +1,4 @@
-import { PageProps, PaginationProps } from '@/types/pagination';
+import { Meta, PageProps, PaginationProps } from '@/types/pagination';
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/pagination';
 
@@ -13,10 +13,10 @@ export function getPaginationOptions(options: PageProps): PaginationProps {
   };
 }
 
-export function buildMeta(total: number, size: number, page?: number): Record<string, number> {
+export function getMeta(pageParams: PageProps, count: number): Meta {
   return {
-    total,
-    size,
-    page: page || DEFAULT_PAGE,
+    page: pageParams.page,
+    pageSize: pageParams.size,
+    total: count,
   };
 }
