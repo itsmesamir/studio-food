@@ -69,7 +69,6 @@ class OrderModel extends BaseModel {
   static async fetchOrders(pagination: PaginationProps, filter: Any) {
     const query = this.baseQuery()
       .select({
-        id: 'u.id',
         name: 'u.name',
         designation: 'u.designation',
         department: ' u.department',
