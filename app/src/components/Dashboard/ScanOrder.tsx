@@ -81,8 +81,8 @@ const ScanOrder = () => {
       );
       alert("Order successfully recorded!");
       resetForm();
-    } catch (error) {
-      console.error("Error recording order:", error);
+    } catch (error: any) {
+      alert(error?.response?.data?.error || "Error placing order");
     }
   };
 

@@ -10,22 +10,21 @@ import {
   InitialTableState,
   getExpandedRowModel,
 } from "@tanstack/react-table";
-// import { useNavigate  } from "react-router-dom";
 import { FaChevronUp } from "react-icons/fa";
 
 import Empty from "components/empty";
 import Loading from "components/loading";
-// import Pagination from "components/common/pagination";
 
 import { joinStrings } from "utils/string";
-// import { updateUrl } from "utils/updateUrl";
 import { classNames } from "utils/className";
 import { parseQuery as parse } from "utils/queryParams";
 
-// import history from '$/utils/history';
 import config from "config";
 import { Any, DefaultObject } from "types/common";
 import { Meta } from "types/pagination";
+import Pagination from "components/commons/pagination";
+import { setSearchParamsFromObject } from "utils/updateUrl";
+import { useSearchParams } from "react-router-dom";
 
 export const ACTION_ID = "action";
 
@@ -123,8 +122,6 @@ function Table<T>(props: MyTableProps<T>) {
     pagination,
   } = props;
 
-  // const history = useNavigate ();
-
   const sortable = sorting && !loading;
   const isTableEmpty = !data?.length;
 
@@ -171,18 +168,25 @@ function Table<T>(props: MyTableProps<T>) {
     return selectedRows?.includes(id);
   };
 
-  // Pagination
-  // const onPageChange = (selectedPage: number): void => {
-  //   updateUrl({ ...parse(window.location.search), page: selectedPage });
-  // };
+  // Get current search parameters and the function to update them
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // const onPageSizeChange = (selectedSize: number): void => {
-  //   updateUrl({
-  //     ...parse(window.location.search),
-  //     page: 1,
-  //     size: selectedSize,
-  //   });
-  // };
+  // Pagination
+  const onPageChange = (selectedPage: number): void => {
+    const data = { ...parse(window.location.search), page: selectedPage };
+
+    setSearchParamsFromObject(searchParams, setSearchParams, data);
+  };
+
+  const onPageSizeChange = (selectedSize: number): void => {
+    const data = {
+      ...parse(window.location.search),
+      page: 1,
+      size: selectedSize,
+    };
+
+    setSearchParamsFromObject(searchParams, setSearchParams, data);
+  };
 
   const showEmptyContent = (!loading && isTableEmpty) || showEmpty;
 
@@ -398,14 +402,14 @@ function Table<T>(props: MyTableProps<T>) {
         {showEmptyContent && <Empty message={emptyMessage} />}
       </div>
 
-      {/* {pagination && (
+      {pagination && (
         <Pagination
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
           pageCount={+pagination.pageCount}
           pageData={pagination.pageData}
         />
-      )} */}
+      )}
     </div>
   );
 }

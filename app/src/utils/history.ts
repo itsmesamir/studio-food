@@ -1,5 +1,3 @@
-// import { createBrowserHistory } from "history";
+import { createBrowserHistory } from "history";
 
-// import config from "config";
-
-// export default createBrowserHistory({ basename: config.appBasePath });
+export default createBrowserHistory();
