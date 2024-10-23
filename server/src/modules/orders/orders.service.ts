@@ -47,7 +47,7 @@ export const createOrder = async (data: Any) => {
 
   const { userId, mealType } = data;
 
-  const existingOrder = await fetchOrders({ userId, mealType, date: new Date() });
+  const existingOrder = await fetchOrders({ userIds: userId, mealType, date: new Date() });
 
   if (existingOrder.data.length > 0) {
     throw new BadRequestError(
