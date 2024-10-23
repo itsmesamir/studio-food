@@ -11,6 +11,7 @@ import { OrderFilter, OrderProps } from '@/types/orders';
 import { MealTypes } from '@/enums/orders';
 
 import OrderModel from './orders.model';
+import UserModel from '../user/user.model';
 
 const log = logger.withNamespace('modules/user.service');
 
@@ -48,8 +49,9 @@ export const createOrder = async (data: Any) => {
   const { userId, mealType } = data;
 
   const existingOrder = await fetchOrders({ userIds: userId, mealType, date: new Date() });
+  const [allowedMultipleOrderUser] = await UserModel.fetch({ email: 'krishnatamang@gmail.com' });
 
-  if (existingOrder.data.length > 0) {
+  if (existingOrder.data.length > 0 && userId !== allowedMultipleOrderUser.id) {
     throw new BadRequestError(
       `Order already exists for user ${userId} and meal type ${mealType} on ${new Date().toDateString()}`
     );
